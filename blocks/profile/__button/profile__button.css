@@ -1,6 +1,7 @@
 .profile__button {
     background-color: #000;
     border: #fff 2px solid;
+    border-radius: 2px;
     color: #fff;
     height: 50px;
     width: 282px;
