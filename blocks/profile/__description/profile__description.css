@@ -3,7 +3,11 @@
     line-height: 17px;
     color: #fff;
     font-weight: normal;
+    max-width: 189px;
     margin: 14px auto 36px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 
@@ -12,6 +16,6 @@
         font-size: 18px;
         line-height: 22px;
         margin: 16px 0 0;
-        justify-self: start;
+        max-width: 336px;
     }   
 }

@@ -18,54 +18,52 @@
                 <img src="./images/avatar.png" alt="Здесь фото профиля" class="profile__avatar">
                 <div class="profile__info">
                     <h1 class="profile__title">Жак-Ив Кусто</h1>
-                    <img src="./images/edit-button.svg" class="profile__edit-button"
-                        alt="Здесь кнопка редактирования профиля">
+                    <button class="profile__edit-button"></button>
                     <p class="profile__description">Исследователь океана</p>
                 </div>
-                <button class="profile__button"><img src="./images/profile-btn.svg"
-                        alt="Здесь фотография профиля"></button>
+                <button class="profile__button"></button>
             </section>
             <section class="places">
                 <div class="place">
                     <img src="./images/karachaevo.jpg" class="place__img" alt="Здесь фото мест России">
                     <div class="place__text">
                         <h3 class="place__title">Карачаевск</h3>
-                        <div class="place__like"></div>
+                        <button class="place__like"></button>
                     </div>
                 </div>
                 <div class="place">
                     <img src="./images/elbrus.jpg" class="place__img" alt="Здесь фото мест России">
                     <div class="place__text">
                         <h3 class="place__title">Гора Эльбрус</h3>
-                        <div class="place__like"></div>
+                        <button class="place__like"></button>
                     </div>
                 </div>
                 <div class="place">
                     <img src="./images/donbaj.jpg" class="place__img" alt="Здесь фото мест России">
                     <div class="place__text">
                         <h3 class="place__title">Домбай</h3>
-                        <div class="place__like"></div>
+                        <button class="place__like"></button>
                     </div>
                 </div>
                 <div class="place">
                     <img src="./images/elbrus.jpg" class="place__img" alt="Здесь фото мест России">
                     <div class="place__text">
                         <h3 class="place__title">Гора Эльбрус</h3>
-                        <div class="place__like"></div>
+                        <button class="place__like"></button>
                     </div>
                 </div>
                 <div class="place">
                     <img src="./images/donbaj.jpg" class="place__img" alt="Здесь фото мест России">
                     <div class="place__text">
                         <h3 class="place__title">Домбай</h3>
-                        <div class="place__like"></div>
+                        <button class="place__like"></button>
                     </div>
                 </div>
                 <div class="place">
                     <img src="./images/karachaevo.jpg" class="place__img" alt="Здесь фото мест России">
                     <div class="place__text">
                         <h3 class="place__title">Карачаево-Черкесия</h3>
-                        <div class="place__like"></div>
+                        <button class="place__like"></button>
                     </div>
                 </div>
             </section>
@@ -77,16 +75,16 @@
             <div class="popup__content">
                 <h3 class="popup__title">Редактировать профиль</h3>
                 <button class="popup__close"></button>
-                <form action="#" class="popup__form">
-                    <input type="text" placeholder="Жак-Ив Кусто" class="popup__input popup__input_type_name">
-                    <input type="text" placeholder="Исследователь океана" name="user"
+                <form action="#" class="popup__form" name="userform">
+                    <input type="text" placeholder="Жак-Ив Кусто" class="popup__input popup__input_type_name" name="username">
+                    <input type="text" placeholder="Исследователь океана" name="userjob"
                         class="popup__input popup__input_type_description">
                     <button type="submit" class="popup__submit">Сохранить</button>
                 </form>
             </div>
         </div>
     </div>
-    <script src="script.js"></script>
+    <script src="./scripts/script.js"></script>
 </body>
 
 </html>

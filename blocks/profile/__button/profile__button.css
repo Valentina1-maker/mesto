@@ -1,5 +1,9 @@
 .profile__button {
     background-color: #000;
+    background-image: url(../../../images/profile-btn.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 0;
     border: #fff 2px solid;
     border-radius: 2px;
     color: #fff;

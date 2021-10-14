@@ -7,6 +7,9 @@ const modalSaveBtn = document.querySelector ('.popup__submit')
 
 function openModalWindow(modalWindow) {
     modalWindow.classList.add('popup_is-opened');
+
+    nameInput.value = namePage.textContent 
+    jobInput.value = jobPage.textContent 
 }
 
 profileEditBtn.addEventListener('click', function () {
@@ -14,7 +17,7 @@ profileEditBtn.addEventListener('click', function () {
 })
 
 function closeModalWindow(modalWindow) {
-    modalWindow.style.display = 'none';
+    modalWindow.classList.remove('popup_is-opened');
 }
 
 modalSaveBtn.addEventListener('click', function () {
@@ -36,10 +39,7 @@ function formSubmitHandler (evt) {
     namePage.textContent = nameInput.value
     jobPage.textContent = jobInput.value 
 
-    if (openModalWindow(modalWindow)) {
-    nameInput.textContent = namePage.value
-    jobInput.textContent = jobPage.value
-    } 
+    closeModalWindow(modalWindow);
 }
 formElement.addEventListener('submit', formSubmitHandler);
 
