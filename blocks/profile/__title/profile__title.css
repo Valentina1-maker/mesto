@@ -9,13 +9,16 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+    max-width: 189px;
 }
+
 
 
 @media screen and (min-width: 1024px) {
     .profile__title {
         font-size: 35px;
         line-height: 41px;
+        max-width: 297px;
     }    
 }
 
@@ -23,5 +26,6 @@
     .profile__title {
         font-size: 42px;
         line-height: 48px;
+        
     }    
 }
