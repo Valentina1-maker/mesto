@@ -113,7 +113,7 @@ const renderCard = (taskName) => {
 
 initialCards.forEach(renderCard)
 
-const placePopupElement = document.querySelector('.popup__form_type_new-card')
+const placePopupElement = document.querySelector('.popup__form_new-card')
 
 const addCard = (event) => {
   event.preventDefault();
