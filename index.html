@@ -40,37 +40,39 @@
         </form>
       </div>
     </div>
-  <div class="popup root__popup popup_type_new-card">
-    <div class="popup__content">
-      <h3 class="popup__title">Новое место</h3>
-      <button type="button" class="popup__close  popup__close_type_new-card"></button>
-      <form action="#" class="popup__form  popup__form_type_new-card" name="userform">
-        <input type="text" placeholder="Название" class="popup__input popup__input_type_name-card" name="cardname">
-        <input type="text" placeholder="Ссылка на картинку" name="linkcard"
-          class="popup__input popup__input_type_link">
-        <button type="submit" class="popup__submit  popup__submit_type_new-card">Создать</button>
-      </form>
+    <div class="popup root__popup popup_type_new-card">
+      <div class="popup__content">
+        <h3 class="popup__title">Новое место</h3>
+        <button type="button" class="popup__close  popup__close_type_new-card"></button>
+        <form action="#" class="popup__form  popup__form_type_new-card" name="userform">
+          <input type="text" placeholder="Название" class="popup__input popup__input_type_name-card" name="cardname">
+          <input type="text" placeholder="Ссылка на картинку" name="linkcard"
+            class="popup__input popup__input_type_link">
+          <button type="submit" class="popup__submit  popup__submit_type_new-card">Создать</button>
+        </form>
+      </div>
     </div>
-  </div>
-<div class="popup root__popup popup_type_image">
-  <div class="popup__content popup__content_image">
-    <button type="button" class="popup__close"></button>
-    <figure class="popup__form_type_image">
-       <img class="popup__image" src="" alt="">
-       <figcaption class="popup__image-description"></figcaption>
-    </figure>
-  </div>
-</div>
-  <template id="place-template">
-    <div class="place">
-        <img src="" class="place__img" alt="">
+    <div class="popup root__popup popup_type_image">
+      <div class="popup__content popup__content_image">
+        <button type="button" class="popup__close"></button>
+        <figure class="popup__form_type_image">
+          <img class="popup__image" src="" alt="Здесь картинка">
+          <figcaption class="popup__image-description"></figcaption>
+        </figure>
+      </div>
+    </div>
+    <template id="place-template">
+      <div class="place">
+        <img src="" class="place__img" alt="Здесь картинка">
         <button class="place__delete-btn"></button>
         <div class="place__text">
-            <h3 class="place__title"></h3>
-            <button type="button" class="place__like"></button>
+          <h3 class="place__title"></h3>
+          <button type="button" class="place__like"></button>
         </div>
-    </div>
-</template>
-  <script src="./scripts/script.js"></script>
+      </div>
+    </template>
+    <script src="./scripts/script.js"></script>
+  </div>
 </body>
+
 </html>
