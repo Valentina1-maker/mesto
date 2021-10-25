@@ -71,7 +71,7 @@ const initialCards = [
 
 const initialCardsContainer = document.querySelector('.places');
 const placeTemplate = document.querySelector('#place-template').content
-const modalPreviuPopup = document.querySelector('.popup_type_image')
+const modalPreviuPopup = document.querySelector('.root__popup_type_image')
 
 const renderCard = (taskName) => {
   const cardElement = placeTemplate.cloneNode(true)
@@ -132,7 +132,7 @@ placePopupElement.addEventListener('submit', addCard)
 
 
 // открытие и закрытие модального окна создания карточки
-const modalWindowCards = document.querySelector('.popup_type_new-card')
+const modalWindowCards = document.querySelector('.root__popup_type_new-card')
 const profileBtn = document.querySelector('.profile__button')
 const modalWindowCardsClose = modalWindowCards.querySelector('.popup__close_type_new-card')
 const modalCardsSave = modalWindowCards.querySelector('.popup__submit_type_new-card')
