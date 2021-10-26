@@ -1,31 +1,35 @@
-const modalWindow = document.querySelector('.popup')
-const modalWindowCloseBtn = modalWindow.querySelector('.popup__close')
+const modalProfilePopup = document.querySelector('.root__popup_type_profile')
+const modalWindowCloseBtns = document.querySelectorAll('.popup__close')
 const profileEditBtn = document.querySelector('.profile__edit-button')
 const modalSaveBtn = document.querySelector('.popup__submit')
 
-function openModalWindow(modalWindow) {
-  modalWindow.classList.add('popup_is-opened');
-  nameInput.value = namePage.textContent
-  jobInput.value = jobPage.textContent
+function openModalWindow(modalProfilePopup) {
+  modalProfilePopup.classList.add('popup_is-opened');
+
 }
 
 profileEditBtn.addEventListener('click', function () {
-  openModalWindow(modalWindow);
+  nameInput.value = namePage.textContent
+  jobInput.value = jobPage.textContent
+
+  nameInput.value = '';
+  jobInput.value = '';
+
+  openModalWindow(modalProfilePopup);
 })
 
-function closeModalWindow(modalWindow) {
-  modalWindow.classList.remove('popup_is-opened');
+function closeModalWindow(modalProfilePopup) {
+  modalProfilePopup.classList.remove('popup_is-opened');
 }
 
-modalSaveBtn.addEventListener('click', function () {
-  closeModalWindow(modalWindow);
+modalWindowCloseBtns.forEach((btn) => {
+  btn.addEventListener('click', function (event) {
+    const popup = event.target.closest('.popup')
+    closeModalWindow(popup);
+  })
 })
 
-modalWindowCloseBtn.addEventListener('click', function () {
-  closeModalWindow(modalWindow);
-})
-
-const formElement = document.querySelector('.popup__form')
+const formElement = document.querySelector('.popup__form_profile')
 const nameInput = formElement.querySelector('.popup__input_type_name')
 const jobInput = formElement.querySelector('.popup__input_type_description')
 const jobPage = document.querySelector('.profile__description')
@@ -35,7 +39,8 @@ function formSubmitHandler(evt) {
   evt.preventDefault();
   namePage.textContent = nameInput.value
   jobPage.textContent = jobInput.value
-  closeModalWindow(modalWindow);
+
+  closeModalWindow(modalProfilePopup)
 }
 
 formElement.addEventListener('submit', formSubmitHandler);
@@ -73,28 +78,26 @@ const initialCardsContainer = document.querySelector('.places');
 const placeTemplate = document.querySelector('#place-template').content
 const modalPreviuPopup = document.querySelector('.root__popup_type_image')
 
-const renderCard = (taskName) => {
+
+const createCard = (taskName) => {
   const cardElement = placeTemplate.cloneNode(true)
-  
+
   const cardText = cardElement.querySelector('.place__title')
   cardText.textContent = taskName.name
 
   const cardLink = cardElement.querySelector('.place__img')
   cardLink.setAttribute('src', taskName.link)
+  cardLink.setAttribute('alt', taskName.name)
 
   // открытие и закрытие модального окна попапа с картинкой
 
-  cardLink.addEventListener ('click', () => {
+  cardLink.addEventListener('click', () => {
     const popupImage = modalPreviuPopup.querySelector('.popup__image')
     popupImage.setAttribute('src', taskName.link)
     const popupDescription = modalPreviuPopup.querySelector('.popup__image-description')
     popupDescription.textContent = taskName.name
 
-    modalPreviuPopup.classList.add('popup_is-opened')
-
-    modalPreviuPopup.addEventListener('click', function () {
-      closeModalWindow(modalPreviuPopup);
-    })
+    openModalWindow(modalPreviuPopup)
   })
 
   const isLiked = cardElement.querySelector('.place__like')
@@ -106,7 +109,11 @@ const renderCard = (taskName) => {
   cardDeleteBtn.addEventListener('click', (event) => {
     event.target.closest('.place').remove();
   })
+  return cardElement
+}
 
+const renderCard = (taskName) => {
+  const cardElement = createCard(taskName)
   initialCardsContainer.prepend(cardElement)
 };
 
@@ -126,6 +133,11 @@ const addCard = (event) => {
     name,
     link
   })
+
+  inputName.value = '';
+  inputLink.value = '';
+
+  closeModalWindow(modalWindowCards)
 }
 
 placePopupElement.addEventListener('submit', addCard)
@@ -143,12 +155,5 @@ profileBtn.addEventListener('click', function () {
   openModalWindow(modalWindowCards);
 })
 
-modalWindowCardsClose.addEventListener('click', function () {
-  closeModalWindow(modalWindowCards);
-})
-
-modalCardsSave.addEventListener('click', function () {
-  closeModalWindow(modalWindowCards);
-})
 
 
