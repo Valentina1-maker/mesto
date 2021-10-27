@@ -3,8 +3,8 @@ const modalWindowCloseBtns = document.querySelectorAll('.popup__close')
 const profileEditBtn = document.querySelector('.profile__edit-button')
 const modalSaveBtn = document.querySelector('.popup__submit')
 
-function openModalWindow(modalProfilePopup) {
-  modalProfilePopup.classList.add('popup_is-opened');
+function openModalWindow(popup) {
+  popup.classList.add('popup_is-opened');
 
 }
 
@@ -12,14 +12,11 @@ profileEditBtn.addEventListener('click', function () {
   nameInput.value = namePage.textContent
   jobInput.value = jobPage.textContent
 
-  nameInput.value = '';
-  jobInput.value = '';
-
   openModalWindow(modalProfilePopup);
 })
 
-function closeModalWindow(modalProfilePopup) {
-  modalProfilePopup.classList.remove('popup_is-opened');
+function closeModalWindow(popup) {
+  popup.classList.remove('popup_is-opened');
 }
 
 modalWindowCloseBtns.forEach((btn) => {
