@@ -1,3 +1,4 @@
 .popup__error_active {
     display: flex;
+    max-width: 238px;
 }

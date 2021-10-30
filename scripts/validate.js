@@ -13,11 +13,11 @@ const hideErrorName = (formElement, inputElement, selectors) => {
   errorElement.textContent = '';
 }
 
-const isValid = (formElement, inputElement) => {
+const isValid = (formElement, inputElement, selectors) => {
   if (!inputElement.validity.valid) {
-    showErrorName(formElement, inputElement, inputElement.validationMessage);
+    showErrorName(formElement, inputElement, inputElement.validationMessage, selectors);
   } else {
-    hideErrorName(formElement, inputElement);
+    hideErrorName(formElement, inputElement, selectors);
   }
 };
 
@@ -40,12 +40,12 @@ const toggleButton = (inputList, buttonElement, selectors) => {
 const setEventListener = (formElement, selectors) => {
   const inputList = Array.from(formElement.querySelectorAll(selectors.inputSelector))
   const buttonElement = formElement.querySelector(selectors.submitButtonSelector)
-  toggleButton(inputList, buttonElement);
+  toggleButton(inputList, buttonElement, selectors);
 
   inputList.forEach((inputElement) => {
     inputElement.addEventListener('input', () => {
-      isValid(formElement, inputElement);
-      toggleButton(inputList, buttonElement);
+      isValid(formElement, inputElement, selectors);
+      toggleButton(inputList, buttonElement, selectors);
     });
   });
 };
@@ -56,7 +56,7 @@ const enableValidation = (selectors) => {
     formElement.addEventListener('submit', (evt) => {
       evt.preventDefault();
     });
-    setEventListener(formElement);
+    setEventListener(formElement, selectors);
   });
 };
 
@@ -71,6 +71,3 @@ const selectors = {
 };
 
 enableValidation(selectors)
-
-
-
