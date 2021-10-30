@@ -17,18 +17,18 @@ profileEditBtn.addEventListener('click', function () {
 
 
 function closeModalWindow(popup) {
-  document.removeEventListener('keydown', handleEscUp);
   popup.classList.remove('popup_is-opened');
 }
 
 const handleEscUp = (evt) => {
   evt.preventDefault();
+  if (evt.keyCode !== 27) return 
+
   const activePopup = document.querySelector('.popup_is-opened');
-  if (evt.keyCode === 27) {
-    closeModalWindow(activePopup);
-  };
+  closeModalWindow(activePopup);
 };
 
+document.addEventListener('keyup', handleEscUp);
 
 modalPopups.forEach((popup) => {
   popup.addEventListener('click', function (evt) {
