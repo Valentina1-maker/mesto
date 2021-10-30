@@ -32,11 +32,13 @@
       <div class="popup__content">
         <h3 class="popup__title">Редактировать профиль</h3>
         <button type="button" class="popup__close"></button>
-        <form action="#" class="popup__form popup__form_profile" name="userform">
-          <input type="text" placeholder="Жак-Ив Кусто" class="popup__input popup__input_type_name" name="username">
-          <input type="text" placeholder="Исследователь океана" name="userjob"
-            class="popup__input popup__input_type_description">
-          <button type="submit" class="popup__submit">Сохранить</button>
+        <form action="#" class="popup__form popup__form_profile" name="userform" novalidate>
+          <input  type="text" id = "name-input" placeholder="Имя" class="popup__input popup__input_type_name" name="username" minlength="2" maxlength="40" required>
+          <span class="popup__error name-input-error"></span>
+          <input type="text" id = "job-input" placeholder="О себе" name="userjob"
+            class="popup__input popup__input_type_description" minlength="2" maxlength="200" required>
+          <span class="popup__error job-input-error"></span>
+          <button type="submit" class="popup__submit button">Сохранить</button>
         </form>
       </div>
     </div>
@@ -44,11 +46,13 @@
       <div class="popup__content">
         <h3 class="popup__title">Новое место</h3>
         <button type="button" class="popup__close  popup__close_type_new-card"></button>
-        <form action="#" class="popup__form  popup__form_new-card" name="userform">
-          <input type="text" placeholder="Название" class="popup__input popup__input_type_name-card" name="cardname">
-          <input type="text" placeholder="Ссылка на картинку" name="linkcard"
-            class="popup__input popup__input_type_link">
-          <button type="submit" class="popup__submit  popup__submit_type_new-card">Создать</button>
+        <form action="#" class="popup__form  popup__form_new-card" name="userform" novalidate>
+          <input type="text" id = "card-input" placeholder="Название" class="popup__input popup__input_type_name-card" name="cardname" minlength="2" maxlength="30" required>
+          <span class="popup__error card-input-error"></span>
+          <input type="url" id = "link-input" placeholder="Ссылка на картинку" name="linkcard"
+            class="popup__input popup__input_type_link" required>
+          <span class="popup__error link-input-error"></span>
+          <button type="submit" class="popup__submit  popup__submit_type_new-card button">Создать</button>
         </form>
       </div>
     </div>
@@ -72,6 +76,7 @@
       </div>
     </template>
     <script src="./scripts/script.js"></script>
+    <script src="./scripts/validate.js"></script>
   </div>
 </body>
 

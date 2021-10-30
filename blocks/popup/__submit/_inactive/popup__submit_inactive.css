@@ -1,0 +1,25 @@
+.popup__submit_inactive {
+    background-color: #fff;
+    color: #e5e5e5;
+    width: 238px;
+    min-height: 46px;
+    font-family: 'Inter', Arial, sans-serif;
+    border: 1px #e5e5e5 solid;
+    border-radius: 2px;
+    padding: 0;
+    cursor: default;
+}
+
+@media screen and (min-width: 768px) {
+    .popup__submit_inactive {
+        width: 358px;
+        min-height: 50px;
+    }
+}
+
+@media screen and (min-width: 1280px) {
+    .popup__submit_inactive {
+        width: 358px;
+        min-height: 50px;
+    }
+}

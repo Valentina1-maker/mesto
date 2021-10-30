@@ -1,3 +1,4 @@
+const modalPopups = document.querySelectorAll('.popup')
 const modalProfilePopup = document.querySelector('.root__popup_type_profile')
 const modalWindowCloseBtns = document.querySelectorAll('.popup__close')
 const profileEditBtn = document.querySelector('.profile__edit-button')
@@ -5,7 +6,6 @@ const modalSaveBtn = document.querySelector('.popup__submit')
 
 function openModalWindow(popup) {
   popup.classList.add('popup_is-opened');
-
 }
 
 profileEditBtn.addEventListener('click', function () {
@@ -15,20 +15,33 @@ profileEditBtn.addEventListener('click', function () {
   openModalWindow(modalProfilePopup);
 })
 
+
 function closeModalWindow(popup) {
+  document.removeEventListener('keydown', handleEscUp);
   popup.classList.remove('popup_is-opened');
 }
 
-modalWindowCloseBtns.forEach((btn) => {
-  btn.addEventListener('click', function (event) {
-    const popup = event.target.closest('.popup')
-    closeModalWindow(popup);
-  })
+const handleEscUp = (evt) => {
+  evt.preventDefault();
+  const activePopup = document.querySelector('.popup_is-opened');
+  if (evt.keyCode === 27) {
+    closeModalWindow(activePopup);
+  };
+};
+
+
+modalPopups.forEach((popup) => {
+  popup.addEventListener('click', function (evt) {
+    if (evt.target.classList.contains('popup__close')||evt.target.classList.contains('popup')) {
+      closeModalWindow(popup);
+    }
+  });
 })
 
-const formElement = document.querySelector('.popup__form_profile')
-const nameInput = formElement.querySelector('.popup__input_type_name')
-const jobInput = formElement.querySelector('.popup__input_type_description')
+
+const formElementProfile = document.querySelector('.popup__form_profile')
+const nameInput = formElementProfile.querySelector('.popup__input_type_name')
+const jobInput = formElementProfile.querySelector('.popup__input_type_description')
 const jobPage = document.querySelector('.profile__description')
 const namePage = document.querySelector('.profile__title')
 
@@ -40,7 +53,7 @@ function formSubmitHandler(evt) {
   closeModalWindow(modalProfilePopup)
 }
 
-formElement.addEventListener('submit', formSubmitHandler);
+formElementProfile.addEventListener('submit', formSubmitHandler);
 
 
 const initialCards = [
@@ -151,6 +164,9 @@ const linkPage = document.querySelector('.place__img')
 profileBtn.addEventListener('click', function () {
   openModalWindow(modalWindowCards);
 })
+
+
+
 
 
 
