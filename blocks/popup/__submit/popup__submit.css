@@ -11,6 +11,12 @@
     margin-top: 45px;
 }
 
+.popup__submit:disabled {
+    background-color: #fff;
+    color: #e5e5e5;
+    border: 1px #e5e5e5 solid;
+    cursor: default;
+  }
 
 .popup__submit:hover {
     opacity: 0.8;
@@ -24,9 +30,3 @@
     }
 }
 
-@media screen and (min-width: 1280px) {
-    .popup__submit {
-        width: 358px;
-        min-height: 50px;
-    }
-}

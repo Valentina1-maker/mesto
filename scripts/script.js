@@ -6,6 +6,7 @@ const modalSaveBtn = document.querySelector('.popup__submit')
 
 function openModalWindow(popup) {
   popup.classList.add('popup_is-opened');
+  document.addEventListener('keyup', handleEscUp);
 }
 
 profileEditBtn.addEventListener('click', function () {
@@ -18,11 +19,12 @@ profileEditBtn.addEventListener('click', function () {
 
 function closeModalWindow(popup) {
   popup.classList.remove('popup_is-opened');
+  document.removeEventListener('keyup', handleEscUp);
 }
 
 const handleEscUp = (evt) => {
   evt.preventDefault();
-  if (evt.keyCode !== 27) return 
+  if (evt.key !== 'Escape') return
 
   const activePopup = document.querySelector('.popup_is-opened');
   closeModalWindow(activePopup);
@@ -32,7 +34,7 @@ document.addEventListener('keyup', handleEscUp);
 
 modalPopups.forEach((popup) => {
   popup.addEventListener('click', function (evt) {
-    if (evt.target.classList.contains('popup__close')||evt.target.classList.contains('popup')) {
+    if (evt.target.classList.contains('popup__close') || evt.target.classList.contains('popup')) {
       closeModalWindow(popup);
     }
   });
@@ -131,6 +133,9 @@ const renderCard = (taskName) => {
 initialCards.forEach(renderCard)
 
 const placePopupElement = document.querySelector('.popup__form_new-card')
+const modalWindowCards = document.querySelector('.root__popup_type_new-card')
+const modalCardsSave = document.querySelector('.popup__submit_type_new-card')
+
 
 const addCard = (event) => {
   event.preventDefault();
@@ -147,6 +152,8 @@ const addCard = (event) => {
   inputName.value = '';
   inputLink.value = '';
 
+  modalCardsSave.disabled = true;
+
   closeModalWindow(modalWindowCards)
 }
 
@@ -154,16 +161,16 @@ placePopupElement.addEventListener('submit', addCard)
 
 
 // открытие и закрытие модального окна создания карточки
-const modalWindowCards = document.querySelector('.root__popup_type_new-card')
+
 const profileBtn = document.querySelector('.profile__button')
 const modalWindowCardsClose = modalWindowCards.querySelector('.popup__close_type_new-card')
-const modalCardsSave = modalWindowCards.querySelector('.popup__submit_type_new-card')
 const cardPage = document.querySelector('.place__title')
 const linkPage = document.querySelector('.place__img')
 
 profileBtn.addEventListener('click', function () {
   openModalWindow(modalWindowCards);
 })
+
 
 
 
