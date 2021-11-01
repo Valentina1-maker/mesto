@@ -30,7 +30,6 @@ const handleEscUp = (evt) => {
   closeModalWindow(activePopup);
 };
 
-document.addEventListener('keyup', handleEscUp);
 
 modalPopups.forEach((popup) => {
   popup.addEventListener('click', function (evt) {
