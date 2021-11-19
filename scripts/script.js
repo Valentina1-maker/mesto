@@ -209,16 +209,16 @@ initialCards.forEach((item) => {
 
 // открытие  модального окна создания карточки
 
-const profileBtn = document.querySelector('.profile__button')
-const modalWindowCardsClose = modalWindowCards.querySelector('.popup__close_type_new-card')
-const cardPage = document.querySelector('.place__title')
-const linkPage = document.querySelector('.place__img')
+//const profileBtn = document.querySelector('.profile__button')
+//const modalWindowCardsClose = modalWindowCards.querySelector('.popup__close_type_new-card')
+//const cardPage = document.querySelector('.place__title')
+//const linkPage = document.querySelector('.place__img')
 
 //слушатель открытия модального окна добавления карточки
 
-profileBtn.addEventListener('click', function () {
-  openModalWindow(modalWindowCards);
-})
+//profileBtn.addEventListener('click', function () {
+ // openModalWindow(modalWindowCards);
+//})
 
 
 
