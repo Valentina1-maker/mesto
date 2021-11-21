@@ -1,3 +1,15 @@
+import Card from '../scripts/Card.js'
+import FormValidator from '../scripts/FormValidator.js'
+
+export const config = {
+  formSelector: '.popup__form', //форма попапа
+  inputSelector: '.popup__input', //ссылка или указание профессии в инпуте 
+  submitButtonSelector: '.popup__submit', //кнопка сохрания в попапе
+  inputErrorClass: 'popup__input_error', //текст ошибки
+  errorClass: 'popup__error_active' 
+};
+
+
 const modalPopups = document.querySelectorAll('.popup')
 const modalProfilePopup = document.querySelector('.root__popup_type_profile')
 const modalWindowCloseBtns = document.querySelectorAll('.popup__close')
@@ -5,7 +17,7 @@ const profileEditBtn = document.querySelector('.profile__edit-button')
 const modalSaveBtn = document.querySelector('.popup__submit')
 
 //функция открытия попапа любого
-function openModalWindow(popup) {
+export function openModalWindow(popup) {
   popup.classList.add('popup_is-opened');
   document.addEventListener('keyup', handleEscUp);
 }
@@ -90,44 +102,15 @@ const initialCards = [
 
 const initialCardsContainer = document.querySelector('.places');
 
-class Card {
-  constructor (text, image, cardSelector) {
-    this._text = text;
-    this._image = image;
-    this._cardSelector = cardSelector;
-  }
 
-  _getTemplate() {
-     const cardElement = document
-     .querySelector(this._cardSelector)
-     .content
-     .querySelector('.place')
-     .cloneNode(true);
 
-     return cardElement;
-  }
 
-  createCard() {
-    this._element = this._getTemplate();
-    this._element.querySelector('.place__title').textContent = this._text;
-    this._element.querySelector('.place__img').src = this._image;
-    
-    return this._element
-  }
-}
-
-initialCards.forEach((item) => {
-  const card = new Card(item.name, item.link,'#place-template');
+//initialCards.forEach((item) => {
+ // const card = new Card(item.name, item.link,'#place-template');
   
-  const cardElement = card.createCard();
-  initialCardsContainer.append(cardElement);
-  debugger
-});
-
-
-
-
-
+ // const elementCard = card.createCard();
+//  initialCardsContainer.append(elementCard);
+//});
 
 //const placeTemplate = document.querySelector('#place-template').content
 //const modalPreviuPopup = document.querySelector('.root__popup_type_image')
@@ -170,55 +153,68 @@ initialCards.forEach((item) => {
 //}
 
 //вставка дополнительной карточки в DOM
-//const renderCard = (taskName) => {
- // const cardElement = createCard(taskName)
- // initialCardsContainer.prepend(cardElement)
-//};
+const renderCard = (item) => {
+  const card = new Card(item.name, item.link,'#place-template');
+  const elementCard = card.createCard();
+  initialCardsContainer.prepend(elementCard);
+};
+
+//initialCards.forEach((item) => {
+ // const card = new Card(item.name, item.link,'#place-template');
+  
+ // const elementCard = card.createCard();
+ // initialCardsContainer.append(elementCard);
+//});
+
+
 
 //вставка элементов массива в DOM
-//initialCards.forEach(renderCard)
+initialCards.forEach(renderCard)
 
-//const placePopupElement = document.querySelector('.popup__form_new-card')
-//const modalWindowCards = document.querySelector('.root__popup_type_new-card')
-//const modalCardsSave = document.querySelector('.popup__submit_type_new-card')
+export const modalPreviuPopup = document.querySelector('.root__popup_type_image');
+export const popupImage = modalPreviuPopup.querySelector('.popup__image');
+export const popupDescription = modalPreviuPopup.querySelector('.popup__image-description');
+const placePopupElement = document.querySelector('.popup__form_new-card')
+const modalWindowCards = document.querySelector('.root__popup_type_new-card')
+const modalCardsSave = document.querySelector('.popup__submit_type_new-card')
 
 //функция дополнительного добавления карточки через попап
-//const addCard = (event) => {
-  //event.preventDefault();
- // const inputName = placePopupElement.querySelector('.popup__input_type_name-card')
- // const name = inputName.value
-  //const inputLink = placePopupElement.querySelector('.popup__input_type_link')
-  //const link = inputLink.value
+const addCard = (event) => {
+  event.preventDefault();
+  const inputName = placePopupElement.querySelector('.popup__input_type_name-card')
+  const name = inputName.value
+  const inputLink = placePopupElement.querySelector('.popup__input_type_link')
+  const link = inputLink.value
 
- // renderCard({
- //   name,
- //   link
- // })
+ renderCard({
+ name,
+ link
+ })
 
-  //inputName.value = '';
- // inputLink.value = '';
+  inputName.value = '';
+  inputLink.value = '';
 
- // modalCardsSave.disabled = true;
+  modalCardsSave.disabled = true;
 
-  //closeModalWindow(modalWindowCards)
-//}
+  closeModalWindow(modalWindowCards)
+}
 
 //слушатель сохранения данных новой карточки
-////placePopupElement.addEventListener('submit', addCard)
+placePopupElement.addEventListener('submit', addCard)
 
 
 // открытие  модального окна создания карточки
 
-//const profileBtn = document.querySelector('.profile__button')
-//const modalWindowCardsClose = modalWindowCards.querySelector('.popup__close_type_new-card')
-//const cardPage = document.querySelector('.place__title')
-//const linkPage = document.querySelector('.place__img')
+const profileBtn = document.querySelector('.profile__button')
+const modalWindowCardsClose = modalWindowCards.querySelector('.popup__close_type_new-card')
+const cardPage = document.querySelector('.place__title')
+const linkPage = document.querySelector('.place__img')
 
 //слушатель открытия модального окна добавления карточки
 
-//profileBtn.addEventListener('click', function () {
- // openModalWindow(modalWindowCards);
-//})
+profileBtn.addEventListener('click', function () {
+ openModalWindow(modalWindowCards);
+})
 
 
 
