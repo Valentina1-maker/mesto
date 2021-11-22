@@ -1,14 +1,21 @@
 import Card from '../scripts/Card.js'
 import FormValidator from '../scripts/FormValidator.js'
 
-export const config = {
-  formSelector: '.popup__form', //форма попапа
-  inputSelector: '.popup__input', //ссылка или указание профессии в инпуте 
-  submitButtonSelector: '.popup__submit', //кнопка сохрания в попапе
-  inputErrorClass: 'popup__input_error', //текст ошибки
-  errorClass: 'popup__error_active' 
+const validationConfig = {
+  formSelector: '.popup__form', 
+  inputSelector: '.popup__input', 
+  submitButtonSelector: '.popup__submit', 
+  inputErrorClass: 'popup__input_error', 
+  errorClass: 'popup__error_active'
 };
 
+const placePopupElement = document.querySelector('.popup__form_new-card');
+const formElementProfile = document.querySelector('.popup__form_profile');
+const addCardValidation = new FormValidator(validationConfig, placePopupElement);
+const editProfileValidation = new FormValidator(validationConfig, formElementProfile);
+
+addCardValidation.enableValidation();
+editProfileValidation.enableValidation();
 
 const modalPopups = document.querySelectorAll('.popup')
 const modalProfilePopup = document.querySelector('.root__popup_type_profile')
@@ -16,13 +23,11 @@ const modalWindowCloseBtns = document.querySelectorAll('.popup__close')
 const profileEditBtn = document.querySelector('.profile__edit-button')
 const modalSaveBtn = document.querySelector('.popup__submit')
 
-//функция открытия попапа любого
 export function openModalWindow(popup) {
   popup.classList.add('popup_is-opened');
   document.addEventListener('keyup', handleEscUp);
 }
 
-//функция нажатия кнопки редактирования профиля с открытием попапа редактирования данных профиля
 profileEditBtn.addEventListener('click', function () {
   nameInput.value = namePage.textContent
   jobInput.value = jobPage.textContent
@@ -30,24 +35,20 @@ profileEditBtn.addEventListener('click', function () {
   openModalWindow(modalProfilePopup);
 })
 
-//функция закрытия попапа в том числе с клавиатуры
 function closeModalWindow(popup) {
   popup.classList.remove('popup_is-opened');
   document.removeEventListener('keyup', handleEscUp);
 }
 
-//функция закрытия попапа по клавише Esc
 const handleEscUp = (evt) => {
   evt.preventDefault();
-  if (evt.key !== 'Escape') return //если клавиша не Esc то код не выполняется, если Esc, то выбирается класс, который работает, когда попап открыт
+  if (evt.key !== 'Escape') return 
   const activePopup = document.querySelector('.popup_is-opened');
   closeModalWindow(activePopup);
 };
 
-//функция закрытия попапа по крестику и по оверлею
 modalPopups.forEach((popup) => {
   popup.addEventListener('click', function (evt) {
-    //если событие связано с крестиком закрытия или оверлеем то попап закрывать
     if (evt.target.classList.contains('popup__close') || evt.target.classList.contains('popup')) {
       closeModalWindow(popup);
     }
@@ -55,13 +56,12 @@ modalPopups.forEach((popup) => {
 })
 
 
-const formElementProfile = document.querySelector('.popup__form_profile')
+
 const nameInput = formElementProfile.querySelector('.popup__input_type_name')
 const jobInput = formElementProfile.querySelector('.popup__input_type_description')
 const jobPage = document.querySelector('.profile__description')
 const namePage = document.querySelector('.profile__title')
 
-//отправка данных в профиль при закрытии попапа профиля
 function formSubmitHandler(evt) {
   evt.preventDefault();
   namePage.textContent = nameInput.value
@@ -102,70 +102,11 @@ const initialCards = [
 
 const initialCardsContainer = document.querySelector('.places');
 
-
-
-
-//initialCards.forEach((item) => {
- // const card = new Card(item.name, item.link,'#place-template');
-  
- // const elementCard = card.createCard();
-//  initialCardsContainer.append(elementCard);
-//});
-
-//const placeTemplate = document.querySelector('#place-template').content
-//const modalPreviuPopup = document.querySelector('.root__popup_type_image')
-
-//создание карточки с местами 
-//const createCard = (taskName) => {
-  //использование шаблона темплейт для создания карточки
-  //const cardElement = placeTemplate.cloneNode(true)
-
- // const cardText = cardElement.querySelector('.place__title')
- // cardText.textContent = taskName.name
-
- // const cardLink = cardElement.querySelector('.place__img')
- // cardLink.setAttribute('src', taskName.link)
- // cardLink.setAttribute('alt', taskName.name)
-
-  // открытие модального окна попапа с картинкой
-
- // cardLink.addEventListener('click', () => {
- //   const popupImage = modalPreviuPopup.querySelector('.popup__image')
-//    popupImage.setAttribute('src', taskName.link)
- //   const popupDescription = modalPreviuPopup.querySelector('.popup__image-description')
- //   popupDescription.textContent = taskName.name
-
-//    openModalWindow(modalPreviuPopup)
-//  })
-  
-  //функция лайков 
-//  const isLiked = cardElement.querySelector('.place__like')
-//  isLiked.addEventListener('click', (event) => {
- //   event.target.classList.toggle('place__like_active')
- // })
-  
-  //функция удаления карточки
-//  const cardDeleteBtn = cardElement.querySelector('.place__delete-btn')
- // cardDeleteBtn.addEventListener('click', (event) => {
- //   event.target.closest('.place').remove();
- // })
- // return cardElement
-//}
-
-//вставка дополнительной карточки в DOM
 const renderCard = (item) => {
-  const card = new Card(item.name, item.link,'#place-template');
+  const card = new Card(item.name, item.link, '#place-template');
   const elementCard = card.createCard();
   initialCardsContainer.prepend(elementCard);
 };
-
-//initialCards.forEach((item) => {
- // const card = new Card(item.name, item.link,'#place-template');
-  
- // const elementCard = card.createCard();
- // initialCardsContainer.append(elementCard);
-//});
-
 
 
 //вставка элементов массива в DOM
@@ -174,7 +115,7 @@ initialCards.forEach(renderCard)
 export const modalPreviuPopup = document.querySelector('.root__popup_type_image');
 export const popupImage = modalPreviuPopup.querySelector('.popup__image');
 export const popupDescription = modalPreviuPopup.querySelector('.popup__image-description');
-const placePopupElement = document.querySelector('.popup__form_new-card')
+
 const modalWindowCards = document.querySelector('.root__popup_type_new-card')
 const modalCardsSave = document.querySelector('.popup__submit_type_new-card')
 
@@ -186,10 +127,10 @@ const addCard = (event) => {
   const inputLink = placePopupElement.querySelector('.popup__input_type_link')
   const link = inputLink.value
 
- renderCard({
- name,
- link
- })
+  renderCard({
+    name,
+    link
+  })
 
   inputName.value = '';
   inputLink.value = '';
@@ -204,7 +145,6 @@ placePopupElement.addEventListener('submit', addCard)
 
 
 // открытие  модального окна создания карточки
-
 const profileBtn = document.querySelector('.profile__button')
 const modalWindowCardsClose = modalWindowCards.querySelector('.popup__close_type_new-card')
 const cardPage = document.querySelector('.place__title')
@@ -213,7 +153,7 @@ const linkPage = document.querySelector('.place__img')
 //слушатель открытия модального окна добавления карточки
 
 profileBtn.addEventListener('click', function () {
- openModalWindow(modalWindowCards);
+  openModalWindow(modalWindowCards);
 })
 
 
