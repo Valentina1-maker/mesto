@@ -1,11 +1,11 @@
 import Card from '../scripts/Card.js'
 import FormValidator from '../scripts/FormValidator.js'
 
-const validationConfig = {
-  formSelector: '.popup__form', 
-  inputSelector: '.popup__input', 
-  submitButtonSelector: '.popup__submit', 
-  inputErrorClass: 'popup__input_error', 
+export const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__submit',
+  inputErrorClass: 'popup__input_error',
   errorClass: 'popup__error_active'
 };
 
@@ -42,7 +42,7 @@ function closeModalWindow(popup) {
 
 const handleEscUp = (evt) => {
   evt.preventDefault();
-  if (evt.key !== 'Escape') return 
+  if (evt.key !== 'Escape') return
   const activePopup = document.querySelector('.popup_is-opened');
   closeModalWindow(activePopup);
 };
@@ -55,14 +55,12 @@ modalPopups.forEach((popup) => {
   });
 })
 
-
-
 const nameInput = formElementProfile.querySelector('.popup__input_type_name')
 const jobInput = formElementProfile.querySelector('.popup__input_type_description')
 const jobPage = document.querySelector('.profile__description')
 const namePage = document.querySelector('.profile__title')
 
-function formSubmitHandler(evt) {
+function addFormSubmitProfile(evt) {
   evt.preventDefault();
   namePage.textContent = nameInput.value
   jobPage.textContent = jobInput.value
@@ -70,7 +68,7 @@ function formSubmitHandler(evt) {
   closeModalWindow(modalProfilePopup)
 }
 
-formElementProfile.addEventListener('submit', formSubmitHandler);
+formElementProfile.addEventListener('submit', addFormSubmitProfile);
 
 
 const initialCards = [
@@ -113,8 +111,8 @@ const renderCard = (item) => {
 initialCards.forEach(renderCard)
 
 export const modalPreviuPopup = document.querySelector('.root__popup_type_image');
-export const popupImage = modalPreviuPopup.querySelector('.popup__image');
-export const popupDescription = modalPreviuPopup.querySelector('.popup__image-description');
+export const popupImage = document.querySelector('.popup__image');
+export const popupDescription = document.querySelector('.popup__image-description');
 
 const modalWindowCards = document.querySelector('.root__popup_type_new-card')
 const modalCardsSave = document.querySelector('.popup__submit_type_new-card')
@@ -154,6 +152,7 @@ const linkPage = document.querySelector('.place__img')
 
 profileBtn.addEventListener('click', function () {
   openModalWindow(modalWindowCards);
+  modalCardsSave.disabled = true;
 })
 
 

@@ -1,4 +1,4 @@
-import {modalPreviuPopup, popupImage, popupDescription, openModalWindow} from '../scripts/index.js'
+import { modalPreviuPopup, popupImage, popupDescription, openModalWindow } from '../scripts/index.js'
 
 export default class Card {
   constructor (text, image, cardSelector) {
@@ -32,7 +32,7 @@ export default class Card {
   _modalOpenImg = () => {
     popupImage.setAttribute('src', this._image);
     popupDescription.textContent = this._text;
-    openModalWindow(modalPreviuPopup)
+    openModalWindow(modalPreviuPopup);
   }
 
   _deleteCard (event) {

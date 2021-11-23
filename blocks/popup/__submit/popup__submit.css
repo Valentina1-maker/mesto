@@ -8,7 +8,7 @@
     border-radius: 2px;
     padding: 0;
     cursor: pointer;
-    margin-top: 45px;
+    margin-top: 5px;
 }
 
 .popup__submit:disabled {
@@ -27,6 +27,7 @@
     .popup__submit {
         width: 358px;
         min-height: 50px;
+        margin-top: 8px;
     }
 }
 
