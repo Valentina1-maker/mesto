@@ -1,5 +1,6 @@
 import Card from '../scripts/Card.js'
 import FormValidator from '../scripts/FormValidator.js'
+import Section from '../scripts/Section.js'
 
 export const validationConfig = {
   formSelector: '.popup__form',
@@ -100,15 +101,25 @@ const initialCards = [
 
 const initialCardsContainer = document.querySelector('.places');
 
-const renderCard = (item) => {
-  const card = new Card(item.name, item.link, '#place-template');
-  const elementCard = card.createCard();
-  initialCardsContainer.prepend(elementCard);
-};
+const section = new Section(
+{data: initialCards,
+ renderer: (item) => {
+     const card = new Card(item.name, item.link, '#place-template');
+     const elementCard = card.createCard();
+     section.addItem(elementCard)
+  }
+ }, initialCardsContainer);
 
+//const renderCard = (item) => {
+ //const card = new Card(item.name, item.link, '#place-template');
+ //const elementCard = card.createCard();
+ //initialCards.forEach(elementCard)
+//};
 
 //вставка элементов массива в DOM
-initialCards.forEach(renderCard)
+//initialCards.forEach(renderCard)
+
+//initialCardsContainer.prepend(renderCard);
 
 export const modalPreviuPopup = document.querySelector('.root__popup_type_image');
 export const popupImage = document.querySelector('.popup__image');
