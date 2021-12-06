@@ -1,6 +1,9 @@
 import Card from '../scripts/Card.js'
 import FormValidator from '../scripts/FormValidator.js'
 import Section from '../scripts/Section.js'
+import PopupWithImage from '../scripts/PopupWithImage.js'
+import PopupWithForm from '../scripts/PopupWithForm.js'
+import UserInfo from '../scripts/UserInfo.js'
 
 export const validationConfig = {
   formSelector: '.popup__form',
@@ -12,64 +15,50 @@ export const validationConfig = {
 
 const placePopupElement = document.querySelector('.popup__form_new-card');
 const formElementProfile = document.querySelector('.popup__form_profile');
+const modalPreviuPopup = document.querySelector('.root__popup_type_image');
+const modalPopups = document.querySelectorAll('.popup')
 const addCardValidation = new FormValidator(validationConfig, placePopupElement);
 const editProfileValidation = new FormValidator(validationConfig, formElementProfile);
+const popupOpenImage = new PopupWithImage(modalPreviuPopup);
+
 
 addCardValidation.enableValidation();
 editProfileValidation.enableValidation();
 
-const modalPopups = document.querySelectorAll('.popup')
 const modalProfilePopup = document.querySelector('.root__popup_type_profile')
 const modalWindowCloseBtns = document.querySelectorAll('.popup__close')
 const profileEditBtn = document.querySelector('.profile__edit-button')
 const modalSaveBtn = document.querySelector('.popup__submit')
+const modalWindowCards = document.querySelector('.root__popup_type_new-card')
+const modalCardsSave = document.querySelector('.popup__submit_type_new-card')
+const jobPage = document.querySelector('.profile__description')
+const namePage = document.querySelector('.profile__title')
 
-export function openModalWindow(popup) {
-  popup.classList.add('popup_is-opened');
-  document.addEventListener('keyup', handleEscUp);
-}
+
+const popapFormImg = new PopupWithForm(modalWindowCards, modalCardsSave)
+const popapFormProfile = new PopupWithForm(modalProfilePopup, modalSaveBtn)
+const userInfo = new UserInfo(namePage, jobPage)
+
 
 profileEditBtn.addEventListener('click', function () {
-  nameInput.value = namePage.textContent
-  jobInput.value = jobPage.textContent
-
-  openModalWindow(modalProfilePopup);
-})
-
-function closeModalWindow(popup) {
-  popup.classList.remove('popup_is-opened');
-  document.removeEventListener('keyup', handleEscUp);
-}
-
-const handleEscUp = (evt) => {
-  evt.preventDefault();
-  if (evt.key !== 'Escape') return
-  const activePopup = document.querySelector('.popup_is-opened');
-  closeModalWindow(activePopup);
-};
-
-modalPopups.forEach((popup) => {
-  popup.addEventListener('click', function (evt) {
-    if (evt.target.classList.contains('popup__close') || evt.target.classList.contains('popup')) {
-      closeModalWindow(popup);
-    }
-  });
+  userInfo.setUserInfo();
+  popapFormProfile.open();
 })
 
 const nameInput = formElementProfile.querySelector('.popup__input_type_name')
 const jobInput = formElementProfile.querySelector('.popup__input_type_description')
-const jobPage = document.querySelector('.profile__description')
-const namePage = document.querySelector('.profile__title')
 
 function addFormSubmitProfile(evt) {
   evt.preventDefault();
+  userInfo.getUserInfo()
   namePage.textContent = nameInput.value
   jobPage.textContent = jobInput.value
-
-  closeModalWindow(modalProfilePopup)
+  popapFormProfile.close()
 }
 
 formElementProfile.addEventListener('submit', addFormSubmitProfile);
+popapFormImg.setEventListeners();
+
 
 
 const initialCards = [
@@ -101,32 +90,22 @@ const initialCards = [
 
 const initialCardsContainer = document.querySelector('.places');
 
+
 const section = new Section(
-{data: initialCards,
- renderer: (item) => {
-     const card = new Card(item.name, item.link, '#place-template');
-     const elementCard = card.createCard();
-     section.addItem(elementCard)
-  }
- }, initialCardsContainer);
+  {
+    data: initialCards,
+    renderer: (item) => {
+      const card = new Card(item.name, item.link, '#place-template', popupOpenImage.open.bind(popupOpenImage));
+      const elementCard = card.createCard();
+      section.addItem(elementCard)
+    }
+  }, initialCardsContainer);
 
-//const renderCard = (item) => {
- //const card = new Card(item.name, item.link, '#place-template');
- //const elementCard = card.createCard();
- //initialCards.forEach(elementCard)
-//};
+section.render();
 
-//вставка элементов массива в DOM
-//initialCards.forEach(renderCard)
 
-//initialCardsContainer.prepend(renderCard);
-
-export const modalPreviuPopup = document.querySelector('.root__popup_type_image');
-export const popupImage = document.querySelector('.popup__image');
-export const popupDescription = document.querySelector('.popup__image-description');
-
-const modalWindowCards = document.querySelector('.root__popup_type_new-card')
-const modalCardsSave = document.querySelector('.popup__submit_type_new-card')
+const popupImage = document.querySelector('.popup__image');
+const popupDescription = document.querySelector('.popup__image-description');
 
 //функция дополнительного добавления карточки через попап
 const addCard = (event) => {
@@ -136,17 +115,19 @@ const addCard = (event) => {
   const inputLink = placePopupElement.querySelector('.popup__input_type_link')
   const link = inputLink.value
 
-  renderCard({
-    name,
-    link
-  })
+  const item = {
+    name: inputName.value,
+    link: inputLink.value
+  }
+
+  section.addItem(item)
 
   inputName.value = '';
   inputLink.value = '';
 
   modalCardsSave.disabled = true;
 
-  closeModalWindow(modalWindowCards)
+  popapFormImg.close()
 }
 
 //слушатель сохранения данных новой карточки
@@ -162,7 +143,7 @@ const linkPage = document.querySelector('.place__img')
 //слушатель открытия модального окна добавления карточки
 
 profileBtn.addEventListener('click', function () {
-  openModalWindow(modalWindowCards);
+  popapFormImg.open()
   modalCardsSave.disabled = true;
 })
 

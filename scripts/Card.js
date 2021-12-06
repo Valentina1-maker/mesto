@@ -1,10 +1,9 @@
-import { modalPreviuPopup, popupImage, popupDescription, openModalWindow } from '../scripts/index.js'
-
 export default class Card {
-  constructor (text, image, cardSelector) {
+  constructor (text, image, cardSelector, handleCardClick) {
     this._text = text;
     this._image = image;
     this._cardSelector = cardSelector;
+    this._handleCardClick = handleCardClick
   }
 
   _getTemplate() {
@@ -24,16 +23,16 @@ export default class Card {
     this._cardImg.src = this._image;
     this._element.querySelector('.place__delete-btn').addEventListener('click', this._deleteCard);
     this._element.querySelector('.place__like').addEventListener('click', this._likeCard);
-    this._cardImg.addEventListener('click', this._modalOpenImg);
-    
+    this._cardImg.addEventListener('click', this._handleCardClick);
+
     return this._element
   }
 
-  _modalOpenImg = () => {
-    popupImage.setAttribute('src', this._image);
-    popupDescription.textContent = this._text;
-    openModalWindow(modalPreviuPopup);
-  }
+ // _handleCardClick = () => {
+ //   const openImg = new PopupWithImage(this._handleCardClick)
+ //   console.log(openImg)
+ //   openImg.open()
+ // }
 
   _deleteCard (event) {
     event.target.closest('.place').remove();
