@@ -1,5 +1,5 @@
 export default class Card {
-  constructor (text, image, cardSelector, handleCardClick) {
+  constructor(text, image, cardSelector, handleCardClick) {
     this._text = text;
     this._image = image;
     this._cardSelector = cardSelector;
@@ -7,13 +7,13 @@ export default class Card {
   }
 
   _getTemplate() {
-     const cardElement = document
-     .querySelector(this._cardSelector)
-     .content
-     .querySelector('.place')
-     .cloneNode(true);
+    const cardElement = document
+      .querySelector(this._cardSelector)
+      .content
+      .querySelector('.place')
+      .cloneNode(true);
 
-     return cardElement;
+    return cardElement;
   }
 
   createCard() {
@@ -28,17 +28,11 @@ export default class Card {
     return this._element
   }
 
- // _handleCardClick = () => {
- //   const openImg = new PopupWithImage(this._handleCardClick)
- //   console.log(openImg)
- //   openImg.open()
- // }
-
-  _deleteCard (event) {
+  _deleteCard(event) {
     event.target.closest('.place').remove();
   }
 
-  _likeCard (event) {
+  _likeCard(event) {
     event.target.classList.toggle('place__like_active')
   }
 

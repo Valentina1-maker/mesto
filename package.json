@@ -1,0 +1,32 @@
+{
+  "name": "mesto",
+  "version": "1.0.0",
+  "description": "* Проект даёт возможность создать свой профиль и загрузить свои любимые фотографии",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --mode production",
+    "dev": "webpack serve"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Valentina1-maker/mesto.git"
+  },
+  "author": "Valentina Chamkina",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Valentina1-maker/mesto/issues"
+  },
+  "homepage": "https://github.com/Valentina1-maker/mesto#readme",
+  "devDependencies": {
+    "autoprefixer": "^10.4.0",
+    "css-loader": "^6.5.1",
+    "html-webpack-plugin": "^5.5.0",
+    "mini-css-extract-plugin": "^2.4.5",
+    "postcss": "^8.4.4",
+    "postcss-loader": "^6.2.1",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.65.0",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.6.0"
+  }
+}
