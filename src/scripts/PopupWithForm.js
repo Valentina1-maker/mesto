@@ -8,7 +8,6 @@ export default class PopupWithForm extends Popup {
     this._inputs = this._form.querySelectorAll('.popup__input')
     this._submit = this._form.querySelector('.popup__submit')
     this._closeForm = document.querySelectorAll('.popup__close')
-
   }
 
   _getInputValues() {

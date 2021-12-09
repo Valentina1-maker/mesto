@@ -6,6 +6,7 @@ import Section from '../scripts/Section.js'
 import PopupWithImage from '../scripts/PopupWithImage.js'
 import PopupWithForm from '../scripts/PopupWithForm.js'
 import UserInfo from '../scripts/UserInfo.js'
+import Popup from '../scripts/Popup.js'
 
 export const validationConfig = {
   formSelector: '.popup__form',
@@ -39,6 +40,7 @@ const namePage = document.querySelector('.profile__title')
 
 const popapFormImg = new PopupWithForm(modalWindowCards, modalCardsSave)
 const popapFormProfile = new PopupWithForm(modalProfilePopup, modalSaveBtn)
+const popapPreviuImg = new Popup(modalPreviuPopup)
 const userInfo = new UserInfo(namePage, jobPage)
 
 const nameInput = formElementProfile.querySelector('.popup__input_type_name')
@@ -61,7 +63,7 @@ function addFormSubmitProfile(evt) {
 formElementProfile.addEventListener('submit', addFormSubmitProfile);
 popapFormImg.setEventListeners();
 popapFormProfile.setEventListeners();
-//modalPreviuPopup.setEventListeners();
+popapPreviuImg.setEventListeners();
 
 const initialCards = [
   {
