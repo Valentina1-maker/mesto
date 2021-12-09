@@ -61,8 +61,7 @@ function addFormSubmitProfile(evt) {
 formElementProfile.addEventListener('submit', addFormSubmitProfile);
 popapFormImg.setEventListeners();
 popapFormProfile.setEventListeners();
-
-
+//modalPreviuPopup.setEventListeners();
 
 const initialCards = [
   {
