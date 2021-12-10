@@ -38,8 +38,8 @@ const jobPage = document.querySelector('.profile__description')
 const namePage = document.querySelector('.profile__title')
 
 
-const popapFormImg = new PopupWithForm(modalWindowCards, modalCardsSave)
-const popapFormProfile = new PopupWithForm(modalProfilePopup, modalSaveBtn)
+const popapFormImg = new PopupWithForm(modalWindowCards, addCard)
+const popapFormProfile = new PopupWithForm(modalProfilePopup, addFormSubmitProfile)
 const popapPreviuImg = new Popup(modalPreviuPopup)
 const userInfo = new UserInfo(namePage, jobPage)
 
@@ -54,13 +54,11 @@ profileEditBtn.addEventListener('click', function () {
   popapFormProfile.open();
 })
 
-function addFormSubmitProfile(evt) {
-  evt.preventDefault();
+function addFormSubmitProfile() {
   userInfo.setUserInfo(nameInput, jobInput);
   popapFormProfile.close();
 }
 
-formElementProfile.addEventListener('submit', addFormSubmitProfile);
 popapFormImg.setEventListeners();
 popapFormProfile.setEventListeners();
 popapPreviuImg.setEventListeners();
@@ -110,8 +108,7 @@ const section = new Section(
 section.render();
 
 //функция дополнительного добавления карточки через попап
-const addCard = (event) => {
-  event.preventDefault();
+function addCard() {
   const inputName = placePopupElement.querySelector('.popup__input_type_name-card')
   const inputLink = placePopupElement.querySelector('.popup__input_type_link')
 
@@ -125,13 +122,10 @@ const addCard = (event) => {
   inputName.value = '';
   inputLink.value = '';
 
-  modalCardsSave.disabled = true;
+  addCardValidation.toggleButton()
 
   popapFormImg.close()
 }
-
-//слушатель сохранения данных новой карточки
-placePopupElement.addEventListener('submit', addCard)
 
 
 // открытие  модального окна создания карточки
@@ -141,7 +135,6 @@ const profileBtn = document.querySelector('.profile__button')
 
 profileBtn.addEventListener('click', function () {
   popapFormImg.open()
-  modalCardsSave.disabled = true;
 })
 
 
