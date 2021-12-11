@@ -55,7 +55,9 @@ profileEditBtn.addEventListener('click', function () {
 })
 
 function addFormSubmitProfile() {
-  userInfo.setUserInfo(nameInput, jobInput);
+  const nameInfo = nameInput.value
+  const jobInfo = jobInput.value
+  userInfo.setUserInfo(nameInfo, jobInfo);
   popapFormProfile.close();
 }
 
