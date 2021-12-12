@@ -54,14 +54,12 @@ profileEditBtn.addEventListener('click', function () {
   popapFormProfile.open();
 })
 
-function addFormSubmitProfile() {
-  const nameInfo = nameInput.value
-  const jobInfo = jobInput.value
-  userInfo.setUserInfo(nameInfo, jobInfo);
+function addFormSubmitProfile(formData) {
+  userInfo.setUserInfo(formData.username, formData.userjob);
   popapFormProfile.close();
 }
 
-popapFormImg.setEventListeners();
+
 popapFormProfile.setEventListeners();
 popapPreviuImg.setEventListeners();
 
@@ -98,31 +96,33 @@ const initialCardsContainer = document.querySelector('.places');
 const renderCard = (item) => {
   const card = new Card(item.name, item.link, '#place-template', popupOpenImage.open.bind(popupOpenImage));
   const elementCard = card.createCard();
+  //возвращает элемент объект.. разметку? созданный кард
   section.addItem(elementCard)
+  //добавляет элемент в контейнер
 }
 
 const section = new Section(
   {
-    data: initialCards,
-    renderer: renderCard,
-  }, initialCardsContainer);
+    data: initialCards, //массив с элементами
+    renderer: renderCard, //функция которая добавляет эл в дом
+  }, initialCardsContainer); // контейнер в разметке куда надо добавить 
 
 section.render();
 
 //функция дополнительного добавления карточки через попап
-function addCard() {
-  const inputName = placePopupElement.querySelector('.popup__input_type_name-card')
-  const inputLink = placePopupElement.querySelector('.popup__input_type_link')
+function addCard(formData) {
+  //const inputName = placePopupElement.querySelector('.popup__input_type_name-card')
+  //const inputLink = placePopupElement.querySelector('.popup__input_type_link')
 
   const item = {
-    name: inputName.value,
-    link: inputLink.value
-  }
+     name: formData.cardname,
+     link: formData.linkcard
+ }
+  
+ renderCard(item)
 
-  renderCard(item)
-
-  inputName.value = '';
-  inputLink.value = '';
+  //inputName.value = '';
+ // inputLink.value = '';
 
   addCardValidation.toggleButton()
 
