@@ -59,8 +59,6 @@ function addFormSubmitProfile(formData) {
   popapFormProfile.close();
 }
 
-
-popapFormProfile.setEventListeners();
 popapPreviuImg.setEventListeners();
 
 const initialCards = [
@@ -96,33 +94,25 @@ const initialCardsContainer = document.querySelector('.places');
 const renderCard = (item) => {
   const card = new Card(item.name, item.link, '#place-template', popupOpenImage.open.bind(popupOpenImage));
   const elementCard = card.createCard();
-  //возвращает элемент объект.. разметку? созданный кард
   section.addItem(elementCard)
-  //добавляет элемент в контейнер
 }
 
 const section = new Section(
   {
-    data: initialCards, //массив с элементами
-    renderer: renderCard, //функция которая добавляет эл в дом
-  }, initialCardsContainer); // контейнер в разметке куда надо добавить 
+    data: initialCards,
+    renderer: renderCard,
+  }, initialCardsContainer);
 
 section.render();
 
 //функция дополнительного добавления карточки через попап
 function addCard(formData) {
-  //const inputName = placePopupElement.querySelector('.popup__input_type_name-card')
-  //const inputLink = placePopupElement.querySelector('.popup__input_type_link')
-
   const item = {
-     name: formData.cardname,
-     link: formData.linkcard
- }
-  
- renderCard(item)
+    name: formData.cardname,
+    link: formData.linkcard
+  }
 
-  //inputName.value = '';
- // inputLink.value = '';
+  renderCard(item)
 
   addCardValidation.toggleButton()
 
@@ -136,6 +126,7 @@ const profileBtn = document.querySelector('.profile__button')
 //слушатель открытия модального окна добавления карточки
 
 profileBtn.addEventListener('click', function () {
+  addCardValidation.toggleButton()
   popapFormImg.open()
 })
 
