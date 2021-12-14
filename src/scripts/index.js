@@ -59,7 +59,7 @@ function addFormSubmitProfile(formData) {
   popapFormProfile.close();
 }
 
-popapPreviuImg.setEventListeners();
+popapPreviuImg.open();
 
 const initialCards = [
   {
@@ -114,18 +114,16 @@ function addCard(formData) {
 
   renderCard(item)
 
-  addCardValidation.toggleButton()
-
   popapFormImg.close()
 }
 
 
 // открытие  модального окна создания карточки
-const profileBtn = document.querySelector('.profile__button')
+const cardAddBtn = document.querySelector('.profile__button')
 
 //слушатель открытия модального окна добавления карточки
 
-profileBtn.addEventListener('click', function () {
+cardAddBtn.addEventListener('click', function () {
   addCardValidation.toggleButton()
   popapFormImg.open()
 })
