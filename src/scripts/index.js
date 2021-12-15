@@ -6,7 +6,6 @@ import Section from '../scripts/Section.js'
 import PopupWithImage from '../scripts/PopupWithImage.js'
 import PopupWithForm from '../scripts/PopupWithForm.js'
 import UserInfo from '../scripts/UserInfo.js'
-import Popup from '../scripts/Popup.js'
 
 export const validationConfig = {
   formSelector: '.popup__form',
@@ -19,7 +18,6 @@ export const validationConfig = {
 const placePopupElement = document.querySelector('.popup__form_new-card');
 const formElementProfile = document.querySelector('.popup__form_profile');
 const modalPreviuPopup = document.querySelector('.root__popup_type_image');
-const modalPopups = document.querySelectorAll('.popup')
 const addCardValidation = new FormValidator(validationConfig, placePopupElement);
 const editProfileValidation = new FormValidator(validationConfig, formElementProfile);
 const popupOpenImage = new PopupWithImage(modalPreviuPopup);
@@ -29,18 +27,14 @@ addCardValidation.enableValidation();
 editProfileValidation.enableValidation();
 
 const modalProfilePopup = document.querySelector('.root__popup_type_profile')
-const modalWindowCloseBtns = document.querySelectorAll('.popup__close')
 const profileEditBtn = document.querySelector('.profile__edit-button')
-const modalSaveBtn = document.querySelector('.popup__submit')
 const modalWindowCards = document.querySelector('.root__popup_type_new-card')
-const modalCardsSave = document.querySelector('.popup__submit_type_new-card')
 const jobPage = document.querySelector('.profile__description')
 const namePage = document.querySelector('.profile__title')
 
 
 const popapFormImg = new PopupWithForm(modalWindowCards, addCard)
 const popapFormProfile = new PopupWithForm(modalProfilePopup, addFormSubmitProfile)
-const popapPreviuImg = new Popup(modalPreviuPopup)
 const userInfo = new UserInfo(namePage, jobPage)
 
 const nameInput = formElementProfile.querySelector('.popup__input_type_name')
@@ -59,7 +53,6 @@ function addFormSubmitProfile(formData) {
   popapFormProfile.close();
 }
 
-popapPreviuImg.open();
 
 const initialCards = [
   {
