@@ -1,9 +1,11 @@
+
 export default class Card {
-  constructor(text, image, cardSelector, handleCardClick) {
-    this._text = text;
-    this._image = image;
+  constructor(placeData, cardSelector, handleCardClick, api) {
+    this._placeData = placeData;
     this._cardSelector = cardSelector;
-    this._handleCardClick = handleCardClick
+    this._handleCardClick = handleCardClick;
+    this._likeCountrySelector = '.place__like-counter'
+    this._api = api
   }
 
   _getTemplate() {
@@ -18,9 +20,10 @@ export default class Card {
 
   createCard() {
     this._element = this._getTemplate();
-    this._element.querySelector('.place__title').textContent = this._text;
+    this._element.querySelector('.place__title').textContent = this._placeData.text;
     this._cardImg = this._element.querySelector('.place__img');
-    this._cardImg.src = this._image;
+    this._cardImg.src = this._placeData.image;
+    this._likeCountry = this._element.querySelector(this._likeCountrySelector)
     this._element.querySelector('.place__delete-btn').addEventListener('click', this._deleteCard);
     this._element.querySelector('.place__like').addEventListener('click', this._likeCard);
     this._cardImg.addEventListener('click', this._handleCardClick);
@@ -33,7 +36,18 @@ export default class Card {
   }
 
   _likeCard(event) {
-    event.target.classList.toggle('place__like_active')
+    const isLiked = event.target.classList.contains('place__like_active')
+    const apiMethod = isLiked ? api.deleteLike : api.addLike
+    apiMethod(this._placeData.id)
+      .then(answer => {
+        this.setLikeCounter(answer.likes.length);
+        event.target.classList.toggle('place__like_active')
+      }).catch((err) => {
+        console.log(err)
+      })
   }
 
+  setLikeCounter(number) {
+    this._likeCountry.textContent = number
+  }
 }

@@ -6,6 +6,7 @@ import Section from '../scripts/Section.js'
 import PopupWithImage from '../scripts/PopupWithImage.js'
 import PopupWithForm from '../scripts/PopupWithForm.js'
 import UserInfo from '../scripts/UserInfo.js'
+import Api from '../scripts/Api.js'
 
 export const validationConfig = {
   formSelector: '.popup__form',
@@ -20,8 +21,9 @@ const formElementProfile = document.querySelector('.popup__form_profile');
 const modalPreviuPopup = document.querySelector('.root__popup_type_image');
 const addCardValidation = new FormValidator(validationConfig, placePopupElement);
 const editProfileValidation = new FormValidator(validationConfig, formElementProfile);
+//const editAvatarValidation = new FormValidator(validationConfig, )
 const popupOpenImage = new PopupWithImage(modalPreviuPopup);
-
+const initialCardsContainer = document.querySelector('.places');
 
 addCardValidation.enableValidation();
 editProfileValidation.enableValidation();
@@ -54,49 +56,35 @@ function addFormSubmitProfile(formData) {
 }
 
 
-const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
 
-const initialCardsContainer = document.querySelector('.places');
+const config = {
+  url: 'https://mesto.nomoreparties.co/v1/cohort-31',
+  headers: {
+    authorization: '877e654f-87e4-4c4c-b412-ef12e2acf942',
+    'Content-Type': 'application/json'
+  }
+}
+const api = new Api(config)
 
 
 const renderCard = (item) => {
-  const card = new Card(item.name, item.link, '#place-template', popupOpenImage.open.bind(popupOpenImage));
-  const elementCard = card.createCard();
-  section.addItem(elementCard)
+  const card = new Card(item, '#place-template', popupOpenImage.open.bind(popupOpenImage), api);
+  return card.createCard();
 }
 
-const section = new Section(
-  {
-    data: initialCards,
-    renderer: renderCard,
-  }, initialCardsContainer);
+api.getInitialCards()
+  .then(data => {
+    const section = new Section(
+      {
+        data,
+        renderer: renderCard,
+      }, initialCardsContainer);
 
-section.render();
+    section.render();
+  })
+  .catch(err => {
+    console.log('Ошибка', err)
+  })
 
 //функция дополнительного добавления карточки через попап
 function addCard(formData) {
@@ -111,15 +99,15 @@ function addCard(formData) {
 }
 
 
-// открытие  модального окна создания карточки
-const cardAddBtn = document.querySelector('.profile__button')
+// // открытие  модального окна создания карточки
+// const cardAddBtn = document.querySelector('.profile__button')
 
-//слушатель открытия модального окна добавления карточки
+// //слушатель открытия модального окна добавления карточки
 
-cardAddBtn.addEventListener('click', function () {
-  addCardValidation.toggleButton()
-  popapFormImg.open()
-})
+// cardAddBtn.addEventListener('click', function () {
+//   addCardValidation.toggleButton()
+//   popapFormImg.open()
+// })
 
 
 
