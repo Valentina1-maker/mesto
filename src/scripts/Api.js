@@ -25,13 +25,13 @@ export default class Api {
       .then(res => this._checkResponse(res))
   }
 
-  createCard({ name, link }) {
+  createCard({ cardname, linkcard }) {
     return fetch(`${this._url}/cards`, {
       method:'POST',
-      header: this._headers,
+      headers: this._headers,
       body: JSON.stringify({
-        name,
-        link
+        cardname,
+        linkcard
       })
     })
       .then(res => this._checkResponse(res))
@@ -40,7 +40,7 @@ export default class Api {
   deleteCard(cardId) {
     return fetch(`${this._url}/cards/${cardId}`, {
       method:'DELETE',
-      header: this._headers,
+      headers: this._headers,
     })
       .then(res => this._checkResponse(res))
   }

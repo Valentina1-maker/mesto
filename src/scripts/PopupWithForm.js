@@ -25,6 +25,7 @@ export default class PopupWithForm extends Popup {
       const key = input.getAttribute('name')
       formData[key] = input.value
     });
+    console.log(formData)
     return formData
   }
 

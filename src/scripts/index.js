@@ -133,16 +133,16 @@ const toggleLoading = (popup, isLoaded) => {
     }
   }
 
-function addCardFormHandler ({ name, link } ) {
+function addCardFormHandler ({ cardname, linkcard } ) {
   //toggleLoading(popupFormImg, false)
-  api.createCard({ name, link })
-  .then(dataCard => {
+  api.createCard({ cardname, linkcard })
+  .then(data => {
     const section = new Section(
       {
-        dataCard,
+        data: [data],
         renderer: renderCard,
       }, initialCardsContainer);
-    section.addItem()
+    section.render()
     popupFormImg.close()
   })
   .catch((err) => {
