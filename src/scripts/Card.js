@@ -1,32 +1,33 @@
-
 export default class Card {
-  constructor(placeData, cardSelector, handleCardClick, api) {
+  constructor(placeData, cardSelector, handleCardClick) {
     this._placeData = placeData;
     this._cardSelector = cardSelector;
     this._handleCardClick = handleCardClick;
-    this._likeCountrySelector = '.place__like-counter'
-    this._api = api
+    this._likeCounterSelector = '.place__like-counter'
   }
 
   _getTemplate() {
-    const cardElement = document
+    return document
       .querySelector(this._cardSelector)
       .content
       .querySelector('.place')
       .cloneNode(true);
-
-    return cardElement;
   }
 
-  createCard() {
+  createCard(api) {
     this._element = this._getTemplate();
-    this._element.querySelector('.place__title').textContent = this._placeData.text;
+    this._element.querySelector('.place__title').textContent = this._placeData.name;
     this._cardImg = this._element.querySelector('.place__img');
-    this._cardImg.src = this._placeData.image;
-    this._likeCountry = this._element.querySelector(this._likeCountrySelector)
-    this._element.querySelector('.place__delete-btn').addEventListener('click', this._deleteCard);
-    this._element.querySelector('.place__like').addEventListener('click', this._likeCard);
+    this._cardImg.src = this._placeData.link;
+    this._likeCounter = this._element.querySelector(this._likeCounterSelector)
+    
+    this._element.querySelector('.place__delete-btn')
+      .addEventListener('click', this._deleteCard);
+    this._element.querySelector('.place__like')
+      .addEventListener('click', (e) => this._toggleLikeCard(e, api));
     this._cardImg.addEventListener('click', this._handleCardClick);
+    //this.setLikeCounter(this._placeData.likes.length)
+   // this._likeCounter.textContent = this._placeData.likes.length
 
     return this._element
   }
@@ -35,19 +36,20 @@ export default class Card {
     event.target.closest('.place').remove();
   }
 
-  _likeCard(event) {
+  _toggleLikeCard(event, api) {
     const isLiked = event.target.classList.contains('place__like_active')
-    const apiMethod = isLiked ? api.deleteLike : api.addLike
-    apiMethod(this._placeData.id)
+    
+    api.toggleLike(this._placeData._id, isLiked)
       .then(answer => {
         this.setLikeCounter(answer.likes.length);
         event.target.classList.toggle('place__like_active')
-      }).catch((err) => {
+      })
+      .catch((err) => {
         console.log(err)
       })
   }
 
   setLikeCounter(number) {
-    this._likeCountry.textContent = number
+    this._likeCounter.textContent = number
   }
 }

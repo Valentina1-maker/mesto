@@ -21,7 +21,6 @@ const formElementProfile = document.querySelector('.popup__form_profile');
 const modalPreviuPopup = document.querySelector('.root__popup_type_image');
 const addCardValidation = new FormValidator(validationConfig, placePopupElement);
 const editProfileValidation = new FormValidator(validationConfig, formElementProfile);
-//const editAvatarValidation = new FormValidator(validationConfig, )
 const popupOpenImage = new PopupWithImage(modalPreviuPopup);
 const initialCardsContainer = document.querySelector('.places');
 
@@ -35,42 +34,42 @@ const jobPage = document.querySelector('.profile__description')
 const namePage = document.querySelector('.profile__title')
 
 
-const popapFormImg = new PopupWithForm(modalWindowCards, addCard)
-const popapFormProfile = new PopupWithForm(modalProfilePopup, addFormSubmitProfile)
+const popupFormImg = new PopupWithForm(modalWindowCards, addCardFormHandler)
+const popupFormProfile = new PopupWithForm(modalProfilePopup, addFormSubmitProfile)
 const userInfo = new UserInfo(namePage, jobPage)
 
 const nameInput = formElementProfile.querySelector('.popup__input_type_name')
 const jobInput = formElementProfile.querySelector('.popup__input_type_description')
 
-
 profileEditBtn.addEventListener('click', function () {
   const profileData = userInfo.getUserInfo()
   nameInput.value = profileData.nameUser
   jobInput.value = profileData.infoUser
-  popapFormProfile.open();
+  popupFormProfile.open();
 })
 
 function addFormSubmitProfile(formData) {
   userInfo.setUserInfo(formData.username, formData.userjob);
-  popapFormProfile.close();
+  popupFormProfile.close();
 }
-
-
 
 const config = {
   url: 'https://mesto.nomoreparties.co/v1/cohort-31',
   headers: {
-    authorization: '877e654f-87e4-4c4c-b412-ef12e2acf942',
+    Authorization: '877e654f-87e4-4c4c-b412-ef12e2acf942',
     'Content-Type': 'application/json'
   }
 }
 const api = new Api(config)
+console.log(api)
+
+// const section = new Section(
+//   {
+//     data: api,
+//     renderer: renderCard, 
+//   }, initialCardsContainer);
 
 
-const renderCard = (item) => {
-  const card = new Card(item, '#place-template', popupOpenImage.open.bind(popupOpenImage), api);
-  return card.createCard();
-}
 
 api.getInitialCards()
   .then(data => {
@@ -86,30 +85,73 @@ api.getInitialCards()
     console.log('Ошибка', err)
   })
 
+  
+
+
+
+
 //функция дополнительного добавления карточки через попап
-function addCard(formData) {
-  const item = {
-    name: formData.cardname,
-    link: formData.linkcard
-  }
+// function addCard(formData) {
+//   const item = {
+//     name: formData.cardname,
+//     link: formData.linkcard
+//   }
 
-  renderCard(item)
+//   renderCard(item)
 
-  popapFormImg.close()
+//   popupFormImg.close()
+// }
+
+function renderCard(item) {
+  const card = new Card(
+    item,
+    '#place-template',
+    popupOpenImage.open.bind(popupOpenImage)
+  );
+
+  return card.createCard(api);
 }
 
+// открытие  модального окна создания карточки 
+const cardAddBtn = document.querySelector('.profile__button')
 
-// // открытие  модального окна создания карточки
-// const cardAddBtn = document.querySelector('.profile__button')
+//слушатель открытия модального окна добавления карточки 
+cardAddBtn.addEventListener('click', function () {
+  addCardValidation.toggleButton()
+  popupFormImg.open()
+})
 
-// //слушатель открытия модального окна добавления карточки
+const toggleLoading = (popup, isLoaded) => {
+  if (isLoaded) {
+    if (popup === popupFormImg) {
+      popup.setSubmitButtonText('Создать')
+    } else {
+      popup.setSubmitButtonText('Сохранить')
+    } 
+    } else {
+      popup.setSubmitButtonText('Сохранение...')
+    }
+  }
 
-// cardAddBtn.addEventListener('click', function () {
-//   addCardValidation.toggleButton()
-//   popapFormImg.open()
-// })
-
-
+function addCardFormHandler ({ name, link } ) {
+  //toggleLoading(popupFormImg, false)
+  api.createCard({ name, link })
+  .then(dataCard => {
+    const section = new Section(
+      {
+        dataCard,
+        renderer: renderCard,
+      }, initialCardsContainer);
+    section.addItem()
+    popupFormImg.close()
+  })
+  .catch((err) => {
+    console.log(err)
+  })
+  .finally(() => {
+    toggleLoading(popupFormImg, true)
+  })
+}
 
 
 
