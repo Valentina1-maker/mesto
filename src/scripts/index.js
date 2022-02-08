@@ -19,27 +19,42 @@ export const validationConfig = {
 const placePopupElement = document.querySelector('.popup__form_new-card');
 const formElementProfile = document.querySelector('.popup__form_profile');
 const modalPreviuPopup = document.querySelector('.root__popup_type_image');
+const formElemementAvatar = document.querySelector('.popup__form_avatar');
 const addCardValidation = new FormValidator(validationConfig, placePopupElement);
 const editProfileValidation = new FormValidator(validationConfig, formElementProfile);
+const editAvatarValidation = new FormValidator(validationConfig, formElemementAvatar)
 const popupOpenImage = new PopupWithImage(modalPreviuPopup);
 const initialCardsContainer = document.querySelector('.places');
 
 addCardValidation.enableValidation();
 editProfileValidation.enableValidation();
+editAvatarValidation.enableValidation();
+
 
 const modalProfilePopup = document.querySelector('.root__popup_type_profile')
 const profileEditBtn = document.querySelector('.profile__edit-button')
 const modalWindowCards = document.querySelector('.root__popup_type_new-card')
+const modalAvatarPopup = document.querySelector('.root__popup_type_avatar')
+const modalDeleteCard = document.querySelector('.root__popup_type_delete')
 const jobPage = document.querySelector('.profile__description')
 const namePage = document.querySelector('.profile__title')
+const avatarPage = document.querySelector('.profile__avatar')
+
 
 
 const popupFormImg = new PopupWithForm(modalWindowCards, addCardFormHandler)
-const popupFormProfile = new PopupWithForm(modalProfilePopup, addFormSubmitProfile)
-const userInfo = new UserInfo(namePage, jobPage)
+const popupFormProfile = new PopupWithForm(modalProfilePopup, editProfileFormSubmitHandler)
+const popupFormAvatar = new PopupWithForm(modalAvatarPopup, editAvatarFormSubmitHandler)
+const popupFormDeleteCard = new PopupWithForm(modalDeleteCard, deleteCardHandler)
+const userInfo = new UserInfo(namePage, jobPage, avatarPage)
 
 const nameInput = formElementProfile.querySelector('.popup__input_type_name')
 const jobInput = formElementProfile.querySelector('.popup__input_type_description')
+
+
+avatarPage.addEventListener('click', function () {
+  popupFormAvatar.open()
+ })
 
 profileEditBtn.addEventListener('click', function () {
   const profileData = userInfo.getUserInfo()
@@ -48,10 +63,10 @@ profileEditBtn.addEventListener('click', function () {
   popupFormProfile.open();
 })
 
-function addFormSubmitProfile(formData) {
-  userInfo.setUserInfo(formData.username, formData.userjob);
-  popupFormProfile.close();
-}
+// function addFormSubmitProfile(formData) {
+//   userInfo.setUserInfo(formData.username, formData.userjob);
+//   popupFormProfile.close();
+// }
 
 const config = {
   url: 'https://mesto.nomoreparties.co/v1/cohort-31',
@@ -63,19 +78,13 @@ const config = {
 const api = new Api(config)
 console.log(api)
 
-// const section = new Section(
-//   {
-//     data: api,
-//     renderer: renderCard, 
-//   }, initialCardsContainer);
-
 
 
 api.getInitialCards()
   .then(data => {
     const section = new Section(
       {
-        data,
+        data: data,
         renderer: renderCard,
       }, initialCardsContainer);
 
@@ -86,8 +95,6 @@ api.getInitialCards()
   })
 
   
-
-
 
 
 //функция дополнительного добавления карточки через попап
@@ -106,9 +113,9 @@ function renderCard(item) {
   const card = new Card(
     item,
     '#place-template',
-    popupOpenImage.open.bind(popupOpenImage)
+    popupOpenImage.open.bind(popupOpenImage),
+    api.removeCard()
   );
-
   return card.createCard(api);
 }
 
@@ -127,29 +134,80 @@ const toggleLoading = (popup, isLoaded) => {
       popup.setSubmitButtonText('Создать')
     } else {
       popup.setSubmitButtonText('Сохранить')
-    } 
-    } else {
-      popup.setSubmitButtonText('Сохранение...')
     }
+  } else {
+    popup.setSubmitButtonText('Сохранение...')
   }
+}
 
-function addCardFormHandler ({ cardname, linkcard } ) {
-  //toggleLoading(popupFormImg, false)
+function addCardFormHandler({ cardname, linkcard }) {
+  toggleLoading(popupFormImg, false)
   api.createCard({ cardname, linkcard })
+    .then(data => {
+      const section = new Section(
+        {
+          data: [data],
+          renderer: renderCard,
+        }, initialCardsContainer);
+      section.render(data)
+      popupFormImg.close()
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+    .finally(() => {
+      toggleLoading(popupFormImg, true)
+    })
+}
+
+function editAvatarFormSubmitHandler (editLinkAvatar) {
+  toggleLoading(popupFormAvatar, false)
+  const avatarApi = api.editAvatar(editLinkAvatar)
+  avatarApi //объект пользователя с сервера
+    .then(data => {
+      userInfo.setUserAvatar(data.avatar) //берем ссылку аватара с полученных данных объекта
+      popupFormAvatar.close() 
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+    .finally(() => {
+      toggleLoading(popupFormAvatar, true)
+    })
+}
+
+
+function editProfileFormSubmitHandler (userData) {
+  toggleLoading(popupFormProfile, false)
+  api.editProfile(userData)
   .then(data => {
-    const section = new Section(
-      {
-        data: [data],
-        renderer: renderCard,
-      }, initialCardsContainer);
-    section.render()
-    popupFormImg.close()
+    userInfo.setUserInfo(data.name, data.about)
+    popupFormProfile.close();
   })
   .catch((err) => {
     console.log(err)
   })
   .finally(() => {
-    toggleLoading(popupFormImg, true)
+    toggleLoading(popupFormProfile, true)
+  })
+}
+
+function deleteCardHandler (userData, event) {
+  api.removeCard(userData._id)
+  .then(() => {
+    const card = new Card(
+      item,
+      '#place-template',
+      popupOpenImage.open.bind(popupOpenImage)
+    );
+    card.deleteCard(event)
+    popupFormDeleteCard.close()
+  })
+  .catch((err) => {
+    console.log(err)
+  })
+  .finally(() => {
+    toggleLoading(popupFormDeleteCard, true)
   })
 }
 

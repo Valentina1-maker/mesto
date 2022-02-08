@@ -30,14 +30,14 @@ export default class Api {
       method:'POST',
       headers: this._headers,
       body: JSON.stringify({
-        cardname,
-        linkcard
+        name: cardname,
+        link: linkcard
       })
     })
       .then(res => this._checkResponse(res))
   }
 
-  deleteCard(cardId) {
+  removeCard(cardId) {
     return fetch(`${this._url}/cards/${cardId}`, {
       method:'DELETE',
       headers: this._headers,
@@ -45,13 +45,13 @@ export default class Api {
       .then(res => this._checkResponse(res))
   }
 
-  editProfile({name, about}) {
+  editProfile({username, userjob}) {
     return fetch(`${this._url}/users/me`, {
       method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify({
-        name,
-        about
+        name: username,
+        about: userjob
       })
     })
       .then(res => this._checkResponse(res))
@@ -61,7 +61,22 @@ export default class Api {
     return fetch(`${this._url}/cards/likes/${cardId}`, {
       method: isDelete ? 'DELETE': 'PUT',
       headers: this._headers,
-    })
+    }
       .then(res => this._checkResponse(res))
   }
+
+  editAvatar(userAvatar) {
+    return fetch(`${this._url}/users/me/avatar`, {
+      method: 'PATCH',
+      headers: this._headers,
+      body: JSON.stringify({
+        avatar: userAvatar['avatar'],
+      })
+    })
+    .then(this._checkResponse);
+  }
+
+
+
+
 }
