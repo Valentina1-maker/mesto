@@ -1,9 +1,8 @@
 export default class UserInfo {
-    constructor(nameUser, infoUser, avatarUserLink, userID) {
+    constructor(nameUser, infoUser, avatarUserLink) {
         this._nameUser = nameUser;
         this._infoUser = infoUser;
         this._avatarUser = avatarUserLink;
-        this._userID = userID
     }
 
     getUserInfo() {
@@ -22,9 +21,4 @@ export default class UserInfo {
     setUserAvatar(avatarUserLink) {
         this._avatarUser.style.backgroundImage = `url(${avatarUserLink})`
     }
-
-    getUserID(userID) {
-        return userID
-    }
-
 }

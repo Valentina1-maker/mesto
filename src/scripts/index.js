@@ -16,6 +16,22 @@ export const validationConfig = {
   errorClass: 'popup__error_active'
 };
 
+const config = {
+  url: 'https://mesto.nomoreparties.co/v1/cohort-31',
+  headers: {
+    Authorization: '877e654f-87e4-4c4c-b412-ef12e2acf942',
+    'Content-Type': 'application/json'
+  }
+}
+const api = new Api(config)
+
+
+api.getUserInfo()
+  .then(data => {
+    init(data._id)
+  })
+  
+function init(userID) {
 const placePopupElement = document.querySelector('.popup__form_new-card');
 const formElementProfile = document.querySelector('.popup__form_profile');
 const modalPreviuPopup = document.querySelector('.root__popup_type_image');
@@ -45,8 +61,9 @@ const avatarPage = document.querySelector('.profile__avatar')
 const popupFormImg = new PopupWithForm(modalWindowCards, addCardFormHandler)
 const popupFormProfile = new PopupWithForm(modalProfilePopup, editProfileFormSubmitHandler)
 const popupFormAvatar = new PopupWithForm(modalAvatarPopup, editAvatarFormSubmitHandler)
-const popupFormDeleteCard = new PopupWithForm(modalDeleteCard, deleteCardHandler)
+const popupFormDeleteCard = new PopupWithForm(modalDeleteCard, {handlerFormData: () => {}} )
 const userInfo = new UserInfo(namePage, jobPage, avatarPage)
+console.log(userInfo)
 
 const nameInput = formElementProfile.querySelector('.popup__input_type_name')
 const jobInput = formElementProfile.querySelector('.popup__input_type_description')
@@ -63,22 +80,17 @@ profileEditBtn.addEventListener('click', function () {
   popupFormProfile.open();
 })
 
-// function addFormSubmitProfile(formData) {
-//   userInfo.setUserInfo(formData.username, formData.userjob);
-//   popupFormProfile.close();
-// }
 
-const config = {
-  url: 'https://mesto.nomoreparties.co/v1/cohort-31',
-  headers: {
-    Authorization: '877e654f-87e4-4c4c-b412-ef12e2acf942',
-    'Content-Type': 'application/json'
-  }
+function renderCard(item) {
+  const card = new Card(
+    item,
+    '#place-template',
+    popupOpenImage.open.bind(popupOpenImage),
+    userID,
+    deleteCardCallback
+  );
+  return card.createCard(api);
 }
-const api = new Api(config)
-console.log(api)
-
-
 
 api.getInitialCards()
   .then(data => {
@@ -94,30 +106,46 @@ api.getInitialCards()
     console.log('Ошибка', err)
   })
 
-  
-
-
-//функция дополнительного добавления карточки через попап
-// function addCard(formData) {
-//   const item = {
-//     name: formData.cardname,
-//     link: formData.linkcard
-//   }
-
-//   renderCard(item)
-
-//   popupFormImg.close()
-// }
-
-function renderCard(item) {
-  const card = new Card(
-    item,
-    '#place-template',
-    popupOpenImage.open.bind(popupOpenImage),
-    api.removeCard()
-  );
-  return card.createCard(api);
+function addCardFormHandler({ cardname, linkcard }) {
+  toggleLoading(popupFormImg, false)
+  api.createCard({ cardname, linkcard })
+    .then(data => {
+      const section = new Section(
+        {
+          data: [data],
+          renderer: renderCard,
+        }, initialCardsContainer);
+      section.render(data)
+      popupFormImg.close()
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+    .finally(() => {
+      toggleLoading(popupFormImg, true)
+    })  
 }
+
+
+const deleteCardCallback  = (card) => {
+  popupFormDeleteCard.setSubmitAction(() => {
+    api.removeCard(card.id())
+          .then(() => {
+            const card = new Card(
+              item,
+              '#place-template',
+              popupOpenImage.open.bind(popupOpenImage),
+              userID,
+              deleteCardCallback
+            );
+            card.deleteCard();
+            popupFormDeleteCard.close();
+          })
+          .catch(err => console.log(`При удалении карточки: ${err}`))
+      });
+      popupFormDeleteCard.open();
+}
+
 
 // открытие  модального окна создания карточки 
 const cardAddBtn = document.querySelector('.profile__button')
@@ -140,25 +168,6 @@ const toggleLoading = (popup, isLoaded) => {
   }
 }
 
-function addCardFormHandler({ cardname, linkcard }) {
-  toggleLoading(popupFormImg, false)
-  api.createCard({ cardname, linkcard })
-    .then(data => {
-      const section = new Section(
-        {
-          data: [data],
-          renderer: renderCard,
-        }, initialCardsContainer);
-      section.render(data)
-      popupFormImg.close()
-    })
-    .catch((err) => {
-      console.log(err)
-    })
-    .finally(() => {
-      toggleLoading(popupFormImg, true)
-    })
-}
 
 function editAvatarFormSubmitHandler (editLinkAvatar) {
   toggleLoading(popupFormAvatar, false)
@@ -181,6 +190,7 @@ function editProfileFormSubmitHandler (userData) {
   toggleLoading(popupFormProfile, false)
   api.editProfile(userData)
   .then(data => {
+    console.log(data)
     userInfo.setUserInfo(data.name, data.about)
     popupFormProfile.close();
   })
@@ -191,24 +201,6 @@ function editProfileFormSubmitHandler (userData) {
     toggleLoading(popupFormProfile, true)
   })
 }
-
-function deleteCardHandler (userData, event) {
-  api.removeCard(userData._id)
-  .then(() => {
-    const card = new Card(
-      item,
-      '#place-template',
-      popupOpenImage.open.bind(popupOpenImage)
-    );
-    card.deleteCard(event)
-    popupFormDeleteCard.close()
-  })
-  .catch((err) => {
-    console.log(err)
-  })
-  .finally(() => {
-    toggleLoading(popupFormDeleteCard, true)
-  })
 }
 
 

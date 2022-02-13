@@ -11,12 +11,17 @@ export default class PopupWithForm extends Popup {
   }
 
 
+
   setSubmitButtonText(buttonText) {
     this._submitButton.textContent = buttonText
   }
 
   setSubmitButtonAttribute() {
     this._submitButton.setAttribute('disabled', true)
+  }
+
+  setSubmitAction(action) {
+    this._handlerFormData = action
   }
 
   _getInputValues() {
