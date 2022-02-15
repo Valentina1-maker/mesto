@@ -61,7 +61,7 @@ const avatarPage = document.querySelector('.profile__avatar')
 const popupFormImg = new PopupWithForm(modalWindowCards, addCardFormHandler)
 const popupFormProfile = new PopupWithForm(modalProfilePopup, editProfileFormSubmitHandler)
 const popupFormAvatar = new PopupWithForm(modalAvatarPopup, editAvatarFormSubmitHandler)
-const popupFormDeleteCard = new PopupWithForm(modalDeleteCard, {handlerFormData: () => {}} )
+const popupFormDeleteCard = new PopupWithForm(modalDeleteCard)
 const userInfo = new UserInfo(namePage, jobPage, avatarPage)
 console.log(userInfo)
 
@@ -87,7 +87,7 @@ function renderCard(item) {
     '#place-template',
     popupOpenImage.open.bind(popupOpenImage),
     userID,
-    deleteCardCallback
+    deleteCardCallback,
   );
   return card.createCard(api);
 }
@@ -131,17 +131,10 @@ const deleteCardCallback  = (card) => {
   popupFormDeleteCard.setSubmitAction(() => {
     api.removeCard(card.id())
           .then(() => {
-            const card = new Card(
-              item,
-              '#place-template',
-              popupOpenImage.open.bind(popupOpenImage),
-              userID,
-              deleteCardCallback
-            );
-            card.deleteCard();
             popupFormDeleteCard.close();
+            card.deleteCard();
           })
-          .catch(err => console.log(`При удалении карточки: ${err}`))
+          .catch(err => console.log(`Ошибка: ${err}`))
       });
       popupFormDeleteCard.open();
 }
@@ -201,6 +194,12 @@ function editProfileFormSubmitHandler (userData) {
     toggleLoading(popupFormProfile, true)
   })
 }
+
+
+
+
+
+
 }
 
 
