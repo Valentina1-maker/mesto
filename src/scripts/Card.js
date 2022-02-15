@@ -3,11 +3,11 @@ export default class Card {
     this._placeData = placeData;
     this._cardSelector = cardSelector;
     this._handleCardClick = handleCardClick;
-    this._handleDeleteCallback = handleDeleteCallback;//колбэк после клика на кнопку 
+    this._handleDeleteCallback = handleDeleteCallback;
     this._likeCounterSelector = '.place__like-counter';
     this._userID = userID
     this._handleLikeCallback = handleLikeCallback
-    
+
   }
 
   _getTemplate() {
@@ -32,10 +32,12 @@ export default class Card {
 
     console.log(this._placeData)
 
-    if(this._userID !== this._placeData.owner._id) {
-      this.setLikeCounter(this._placeData.likes.length)
-      this._element.querySelector('.place__like').classList.toggle('place__like_active')
-      }
+
+    if (this._placeData.likes.some(likeUser => likeUser._id === this._userID)) {
+      this._element.querySelector('.place__like').classList.add('place__like_active')
+    }
+
+    this.setLikeCounter(this._placeData.likes.length)
 
     this._element.querySelector('.place__delete-btn')
       .addEventListener('click', () => this._handleDeleteCallback(this));
@@ -54,18 +56,14 @@ export default class Card {
   id() {
     return this._placeData._id
   }
-  
-  
 
   _toggleLikeCard(event, api) {
     const isLiked = event.target.classList.contains('place__like_active')
-    //Проверяет, есть ли данный класс у элемента, на котором происходит событие (вернёт true или false)
-
     api.toggleLike(this._placeData._id, isLiked)
       .then(answer => {
         console.log(answer.likes.length)
-        event.target.classList.toggle('place__like_active')
         this.setLikeCounter(answer.likes.length);
+        event.target.classList.toggle('place__like_active')
       })
       .catch((err) => {
         console.log(err)
@@ -76,12 +74,6 @@ export default class Card {
   setLikeCounter(number) {
     this._likeCounter.textContent = number
   }
-
-
-
-
-
-
 
 }
 

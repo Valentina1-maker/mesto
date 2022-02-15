@@ -1,5 +1,5 @@
 export default class Api {
-  constructor (config) {
+  constructor(config) {
     this._url = config.url
     this._headers = config.headers
   }
@@ -27,7 +27,7 @@ export default class Api {
 
   createCard({ cardname, linkcard }) {
     return fetch(`${this._url}/cards`, {
-      method:'POST',
+      method: 'POST',
       headers: this._headers,
       body: JSON.stringify({
         name: cardname,
@@ -39,13 +39,13 @@ export default class Api {
 
   removeCard(cardId) {
     return fetch(`${this._url}/cards/${cardId}`, {
-      method:'DELETE',
+      method: 'DELETE',
       headers: this._headers
     })
       .then(res => this._checkResponse(res))
   }
 
-  editProfile({username, userjob}) {
+  editProfile({ username, userjob }) {
     return fetch(`${this._url}/users/me`, {
       method: 'PATCH',
       headers: this._headers,
@@ -59,7 +59,7 @@ export default class Api {
 
   toggleLike(cardId, isDelete) {
     return fetch(`${this._url}/cards/likes/${cardId}`, {
-      method: isDelete ? 'DELETE': 'PUT',
+      method: isDelete ? 'DELETE' : 'PUT',
       headers: this._headers,
     })
       .then(res => this._checkResponse(res))
@@ -73,10 +73,6 @@ export default class Api {
         avatar: userAvatar['avatar'],
       })
     })
-    .then(this._checkResponse);
+      .then(this._checkResponse);
   }
-
-
-
-
 }
