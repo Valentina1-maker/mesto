@@ -14,7 +14,6 @@ export default class UserInfo {
 
     setUserInfo(nameInfo, jobInfo) {
         this._nameUser.textContent = nameInfo
-        console.log(nameInfo, jobInfo)
         this._infoUser.textContent = jobInfo
     }
 

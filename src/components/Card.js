@@ -18,32 +18,31 @@ export default class Card {
       .cloneNode(true);
   }
 
-  createCard() {
+  createCard(api) {
     this._element = this._getTemplate();
     this._element.querySelector('.place__title').textContent = this._placeData.name;
     this._cardImg = this._element.querySelector('.place__img');
     this._cardImg.src = this._placeData.link;
     this._likeCounter = this._element.querySelector(this._likeCounterSelector)
-    this._likeButton =  this._element.querySelector('.place__like');
+    this._likeButton = this._element.querySelector('.place__like');
+    this._deleteButton = this._element.querySelector('.place__delete-btn')
 
     if (this._userID !== this._placeData.owner._id) {
-      this._element.querySelector('.place__delete-btn').classList.add('place__delete-btn_none');
+      this._deleteButton.classList.add('place__delete-btn_none');
     }
-
-    console.log(this._placeData)
 
     if (this._placeData.likes.some(likeUser => likeUser._id === this._userID)) {
       this._likeButton.classList.add('place__like_active')
     }
-    
+
     this.setLikeCounter(this._placeData.likes.length)
-    
-    this._setEventListeners()
+
+    this._setEventListeners(api)
 
     return this._element
   }
 
-  
+
 
   deleteCard() {
     this._element.remove();
@@ -72,7 +71,7 @@ export default class Card {
 
 
   _setEventListeners(api) {
-    this._element.querySelector('.place__delete-btn').addEventListener('click', () => this._handleDeleteCallback(this));
+    this._deleteButton.addEventListener('click', () => this._handleDeleteCallback(this));
     this._likeButton.addEventListener('click', (e) => this._toggleLikeCard(e, api));
     this._cardImg.addEventListener('click', this._handleCardClick);
   }

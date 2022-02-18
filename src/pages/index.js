@@ -30,7 +30,7 @@ Promise.all([api.getUserInfo(), api.getInitialCards()])
   })
 
 function init([userData, initialCards]) {
-  const userID = userData._id 
+  const userID = userData._id
   const addCardValidation = new FormValidator(validationConfig, placePopupElement);
   const editProfileValidation = new FormValidator(validationConfig, formElementProfile);
   const editAvatarValidation = new FormValidator(validationConfig, formElemementAvatar)
@@ -76,7 +76,7 @@ function init([userData, initialCards]) {
 
   const section = new Section(renderCard, initialCardsContainer);
 
-  section.render(initialCards);
+  section.render(initialCards.reverse())
 
 
   function handleCardFormHandler({ cardname, linkcard }) {
@@ -95,7 +95,7 @@ function init([userData, initialCards]) {
   }
 
 
-  function deleteCardCallback (card) {
+  function deleteCardCallback(card) {
     popupFormDeleteCard.setSubmitAction(() => {
       api.removeCard(card.id())
         .then(() => {
@@ -159,23 +159,7 @@ function init([userData, initialCards]) {
   }
 }
 
-// Promise.all([api.getUserInfo(), api.getInitialCards()])
-//   .then(([userData, initialCard]) => {
-//     const userID = userData._id
 
-//     userInfo.setUserAvatar(userData.avatar) 
-//     userInfo.setUserInfo({
-//       nameInfo: userData.name,
-//       jobInfo: userData.about
-//     })
-//     const section = new Section(
-//       {
-//         data: initialCard,
-//         renderer: renderCard,
-//       }, initialCardsContainer);
-
-//     section.render(initialCard.reverse())
-//   })
 
 
 
