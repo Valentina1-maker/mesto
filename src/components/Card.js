@@ -23,6 +23,7 @@ export default class Card {
     this._element.querySelector('.place__title').textContent = this._placeData.name;
     this._cardImg = this._element.querySelector('.place__img');
     this._cardImg.src = this._placeData.link;
+    this._cardImg.alt = this._placeData.name;
     this._likeCounter = this._element.querySelector(this._likeCounterSelector)
     this._likeButton = this._element.querySelector('.place__like');
     this._deleteButton = this._element.querySelector('.place__delete-btn')
