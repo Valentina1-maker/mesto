@@ -37,12 +37,7 @@ export default class Card {
     }
     this.setLikeCounter(this._placeData.likes.length)
     
-    this._element.querySelector('.place__delete-btn')
-      .addEventListener('click', () => this._handleDeleteCallback(this));
-    this._likeButton.addEventListener('click', (e) => this._toggleLikeCard(e, api));
-    this._cardImg.addEventListener('click', this._handleCardClick);
-
-    // this._setEventListeners()
+    this._setEventListeners()
 
     return this._element
   }
@@ -75,12 +70,12 @@ export default class Card {
     this._likeCounter.textContent = number
   }
 
-  // _setEventListeners() {
-  //   this._element.querySelector('.place__delete-btn')
-  //     .addEventListener('click', () => this._handleDeleteCallback(this));
-  //   this._likeButton.addEventListener('click', (e) => this._toggleLikeCard(e, this));
-  //   this._cardImg.addEventListener('click', this._handleCardClick);
-  // }
+
+  _setEventListeners() {
+    this._element.querySelector('.place__delete-btn').addEventListener('click', () => this._handleDeleteCallback(this));
+    this._likeButton.addEventListener('click', (e) => this._toggleLikeCard(e, api));
+    this._cardImg.addEventListener('click', this._handleCardClick);
+  }
 
 }
 

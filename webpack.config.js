@@ -7,7 +7,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 module.exports = (env, argv) => {
   const isProductionMode = argv.mode === 'production';
   return {
-    entry: path.resolve(__dirname, 'src', 'scripts', 'index.js'),
+    entry: path.resolve(__dirname, './src/pages/index.js'),
 
     output: {
       path: path.resolve(__dirname, 'dist'),
@@ -18,7 +18,7 @@ module.exports = (env, argv) => {
 
     plugins: [
       new HtmlWebpackPlugin({
-        template: path.resolve(__dirname, 'src', 'index.html'),
+        template: path.resolve(__dirname, './src/index.html'),
         cache: false,
       }),
       new MiniCssExtractPlugin({

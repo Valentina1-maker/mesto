@@ -46,6 +46,7 @@ function init([userData, initialCards]) {
   const popupFormAvatar = new PopupWithForm(modalAvatarPopup, handleAvatarFormSubmitHandler)
   const popupFormDeleteCard = new PopupWithForm(modalDeleteCard)
   const userInfo = new UserInfo(namePage, jobPage, avatarPage)
+
   userInfo.setUserAvatar(userData.avatar)
   userInfo.setUserInfo(userData.name, userData.about)
 
@@ -94,7 +95,7 @@ function init([userData, initialCards]) {
   }
 
 
-  const deleteCardCallback = (card) => {
+  function deleteCardCallback (card) {
     popupFormDeleteCard.setSubmitAction(() => {
       api.removeCard(card.id())
         .then(() => {
