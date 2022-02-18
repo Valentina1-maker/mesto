@@ -1,20 +1,18 @@
 import '../pages/index.css'
 
-import Card from '../scripts/Card.js'
-import FormValidator from '../scripts/FormValidator.js'
-import Section from '../scripts/Section.js'
-import PopupWithImage from '../scripts/PopupWithImage.js'
-import PopupWithForm from '../scripts/PopupWithForm.js'
-import UserInfo from '../scripts/UserInfo.js'
-import Api from '../scripts/Api.js'
+import Card from '../components/Card.js'
+import FormValidator from '../components/FormValidator.js'
+import Section from '../components/Section.js'
+import PopupWithImage from '../components/PopupWithImage.js'
+import PopupWithForm from '../components/PopupWithForm.js'
+import UserInfo from '../components/UserInfo.js'
+import Api from '../components/Api.js'
+import {
+  validationConfig, placePopupElement, formElementProfile, modalPreviuPopup,
+  formElemementAvatar, initialCardsContainer, modalProfilePopup, profileEditBtn, modalWindowCards,
+  modalAvatarPopup, modalDeleteCard, jobPage, namePage, avatarPage, nameInput, jobInput, cardAddBtn
+} from '../utils/constants.js'
 
-export const validationConfig = {
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__submit',
-  inputErrorClass: 'popup__input_error',
-  errorClass: 'popup__error_active'
-};
 
 const config = {
   url: 'https://mesto.nomoreparties.co/v1/cohort-35',
@@ -25,47 +23,31 @@ const config = {
 }
 const api = new Api(config)
 
-
 Promise.all([api.getUserInfo(), api.getInitialCards()])
-  .then(data => init(data))
+  .then((data) => init(data))
+  .catch((err) => {
+    console.log(err)
+  })
 
-function init([userData, initialCard]) {
-  const userID = userData._id
-  const placePopupElement = document.querySelector('.popup__form_new-card');
-  const formElementProfile = document.querySelector('.popup__form_profile');
-  const modalPreviuPopup = document.querySelector('.root__popup_type_image');
-  const formElemementAvatar = document.querySelector('.popup__form_avatar');
+function init([userData, initialCards]) {
+  const userID = userData._id 
   const addCardValidation = new FormValidator(validationConfig, placePopupElement);
   const editProfileValidation = new FormValidator(validationConfig, formElementProfile);
   const editAvatarValidation = new FormValidator(validationConfig, formElemementAvatar)
   const popupOpenImage = new PopupWithImage(modalPreviuPopup);
-  const initialCardsContainer = document.querySelector('.places');
+
 
   addCardValidation.enableValidation();
   editProfileValidation.enableValidation();
   editAvatarValidation.enableValidation();
 
-
-  const modalProfilePopup = document.querySelector('.root__popup_type_profile')
-  const profileEditBtn = document.querySelector('.profile__edit-button')
-  const modalWindowCards = document.querySelector('.root__popup_type_new-card')
-  const modalAvatarPopup = document.querySelector('.root__popup_type_avatar')
-  const modalDeleteCard = document.querySelector('.root__popup_type_delete')
-  const jobPage = document.querySelector('.profile__description')
-  const namePage = document.querySelector('.profile__title')
-  const avatarPage = document.querySelector('.profile__avatar')
-
-
-
-  const popupFormImg = new PopupWithForm(modalWindowCards, addCardFormHandler)
-  const popupFormProfile = new PopupWithForm(modalProfilePopup, editProfileFormSubmitHandler)
-  const popupFormAvatar = new PopupWithForm(modalAvatarPopup, editAvatarFormSubmitHandler)
+  const popupFormImg = new PopupWithForm(modalWindowCards, handleCardFormHandler)
+  const popupFormProfile = new PopupWithForm(modalProfilePopup, handleProfileFormSubmitHandler)
+  const popupFormAvatar = new PopupWithForm(modalAvatarPopup, handleAvatarFormSubmitHandler)
   const popupFormDeleteCard = new PopupWithForm(modalDeleteCard)
   const userInfo = new UserInfo(namePage, jobPage, avatarPage)
-  console.log(userInfo)
-
-  const nameInput = formElementProfile.querySelector('.popup__input_type_name')
-  const jobInput = formElementProfile.querySelector('.popup__input_type_description')
+  userInfo.setUserAvatar(userData.avatar)
+  userInfo.setUserInfo(userData.name, userData.about)
 
 
   avatarPage.addEventListener('click', function () {
@@ -86,35 +68,21 @@ function init([userData, initialCard]) {
       '#place-template',
       popupOpenImage.open.bind(popupOpenImage),
       userID,
-      deleteCardCallback,
+      deleteCardCallback
     );
     return card.createCard(api);
   }
 
-  api.getInitialCards()
-    .then(() => {
-      const section = new Section(
-        {
-          data: initialCard,
-          renderer: renderCard,
-        }, initialCardsContainer);
+  const section = new Section(renderCard, initialCardsContainer);
 
-      section.render();
-    })
-    .catch(err => {
-      console.log('Ошибка', err)
-    })
+  section.render(initialCards);
 
-  function addCardFormHandler({ cardname, linkcard }) {
+
+  function handleCardFormHandler({ cardname, linkcard }) {
     toggleLoading(popupFormImg, false)
     api.createCard({ cardname, linkcard })
       .then(data => {
-        const section = new Section(
-          {
-            data: [data],
-            renderer: renderCard,
-          }, initialCardsContainer);
-        section.render(data)
+        section.render([data])
         popupFormImg.close()
       })
       .catch((err) => {
@@ -130,17 +98,13 @@ function init([userData, initialCard]) {
     popupFormDeleteCard.setSubmitAction(() => {
       api.removeCard(card.id())
         .then(() => {
-          popupFormDeleteCard.close();
           card.deleteCard();
+          popupFormDeleteCard.close();
         })
         .catch(err => console.log(`Ошибка: ${err}`))
     });
     popupFormDeleteCard.open();
   }
-
-
-  // открытие  модального окна создания карточки 
-  const cardAddBtn = document.querySelector('.profile__button')
 
   //слушатель открытия модального окна добавления карточки 
   cardAddBtn.addEventListener('click', function () {
@@ -161,12 +125,12 @@ function init([userData, initialCard]) {
   }
 
 
-  function editAvatarFormSubmitHandler(editLinkAvatar) {
+  function handleAvatarFormSubmitHandler(editLinkAvatar) {
     toggleLoading(popupFormAvatar, false)
     const avatarApi = api.editAvatar(editLinkAvatar)
-    avatarApi 
+    avatarApi
       .then(data => {
-        userInfo.setUserAvatar(data.avatar) 
+        userInfo.setUserAvatar(data.avatar)
         popupFormAvatar.close()
       })
       .catch((err) => {
@@ -178,11 +142,10 @@ function init([userData, initialCard]) {
   }
 
 
-  function editProfileFormSubmitHandler(userData) {
+  function handleProfileFormSubmitHandler(userData) {
     toggleLoading(popupFormProfile, false)
     api.editProfile(userData)
       .then(data => {
-        console.log(data)
         userInfo.setUserInfo(data.name, data.about)
         popupFormProfile.close();
       })
@@ -194,6 +157,27 @@ function init([userData, initialCard]) {
       })
   }
 }
+
+// Promise.all([api.getUserInfo(), api.getInitialCards()])
+//   .then(([userData, initialCard]) => {
+//     const userID = userData._id
+
+//     userInfo.setUserAvatar(userData.avatar) 
+//     userInfo.setUserInfo({
+//       nameInfo: userData.name,
+//       jobInfo: userData.about
+//     })
+//     const section = new Section(
+//       {
+//         data: initialCard,
+//         renderer: renderCard,
+//       }, initialCardsContainer);
+
+//     section.render(initialCard.reverse())
+//   })
+
+
+
 
 
 
