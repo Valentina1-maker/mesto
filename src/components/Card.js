@@ -18,7 +18,7 @@ export default class Card {
       .cloneNode(true);
   }
 
-  createCard(api) {
+  createCard() {
     this._element = this._getTemplate();
     this._element.querySelector('.place__title').textContent = this._placeData.name;
     this._cardImg = this._element.querySelector('.place__img');
@@ -35,6 +35,7 @@ export default class Card {
     if (this._placeData.likes.some(likeUser => likeUser._id === this._userID)) {
       this._likeButton.classList.add('place__like_active')
     }
+    
     this.setLikeCounter(this._placeData.likes.length)
     
     this._setEventListeners()
@@ -57,7 +58,6 @@ export default class Card {
     const isLiked = event.target.classList.contains('place__like_active')
     api.toggleLike(this._placeData._id, isLiked)
       .then(answer => {
-        console.log(answer.likes.length)
         this.setLikeCounter(answer.likes.length);
         event.target.classList.toggle('place__like_active')
       })
@@ -71,7 +71,7 @@ export default class Card {
   }
 
 
-  _setEventListeners() {
+  _setEventListeners(api) {
     this._element.querySelector('.place__delete-btn').addEventListener('click', () => this._handleDeleteCallback(this));
     this._likeButton.addEventListener('click', (e) => this._toggleLikeCard(e, api));
     this._cardImg.addEventListener('click', this._handleCardClick);
