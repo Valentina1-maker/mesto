@@ -33,7 +33,8 @@ function init([userData, initialCards]) {
   const userID = userData._id
   const addCardValidation = new FormValidator(validationConfig, placePopupElement);
   const editProfileValidation = new FormValidator(validationConfig, formElementProfile);
-  const editAvatarValidation = new FormValidator(validationConfig, formElemementAvatar)
+  const editAvatarValidation = new FormValidator(validationConfig, formElemementAvatar);
+
   const popupOpenImage = new PopupWithImage(modalPreviuPopup);
 
 
@@ -52,6 +53,7 @@ function init([userData, initialCards]) {
 
 
   avatarPage.addEventListener('click', function () {
+    editAvatarValidation.toggleButton()
     popupFormAvatar.open()
   })
 
